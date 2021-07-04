@@ -1,0 +1,2276 @@
+
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tutorial 4: Spike-timing dependent plasticity (STDP) — Neuromatch Academy: Computational Neuroscience</title>
+<link href="../../../_static/css/theme.css" rel="stylesheet"/>
+<link href="../../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet"/>
+<link href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css" rel="stylesheet"/>
+<link as="font" crossorigin="" href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2" rel="preload" type="font/woff2"/>
+<link as="font" crossorigin="" href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2" rel="preload" type="font/woff2"/>
+<link href="../../../_static/pygments.css" rel="stylesheet" type="text/css">
+<link href="../../../_static/sphinx-book-theme.acff12b8f9c144ce68a297486a2fa670.css" rel="stylesheet" type="text/css">
+<link href="../../../_static/togglebutton.css" rel="stylesheet" type="text/css">
+<link href="../../../_static/copybutton.css" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/mystnb.css" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sphinx-thebe.css" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" rel="stylesheet" type="text/css"/>
+<link as="script" href="../../../_static/js/index.1c5a1a01449ed65a7b51.js" rel="preload"/>
+<script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+<script src="../../../_static/jquery.js"></script>
+<script src="../../../_static/underscore.js"></script>
+<script src="../../../_static/doctools.js"></script>
+<script src="../../../_static/togglebutton.js"></script>
+<script src="../../../_static/clipboard.min.js"></script>
+<script src="../../../_static/copybutton.js"></script>
+<script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+<script src="../../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+<script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+<script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+<script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+<script async="async" src="../../../_static/sphinx-thebe.js"></script>
+<script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+<link href="../../../_static/nma-logo-square-4xp.jpg" rel="shortcut icon">
+<link href="../../../genindex.html" rel="index" title="Index"/>
+<link href="../../../search.html" rel="search" title="Search"/>
+<link href="../W2D3_Outro.html" rel="next" title="Outro"/>
+<link href="W2D3_Tutorial3.html" rel="prev" title="Tutorial 3: Synaptic transmission - Models of static and dynamic synapses"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="en" name="docsearch:language"/>
+</link></link></link></link></head>
+<body data-offset="80" data-spy="scroll" data-target="#bd-toc-nav">
+<div class="container-fluid" id="banner"></div>
+<div class="container-xl">
+<div class="row">
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+<div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../../../index.html">
+<img alt="logo" class="logo" src="../../../_static/nma-logo-square-4xp.jpg"/>
+<h1 class="site-logo" id="site-title">Neuromatch Academy: Computational Neuroscience</h1>
+</a>
+</div><form action="../../../search.html" class="bd-search d-flex align-items-center" method="get">
+<i class="icon fas fa-search"></i>
+<input aria-label="Search this book..." autocomplete="off" class="form-control" id="search-input" name="q" placeholder="Search this book..." type="search"/>
+</form><nav aria-label="Main navigation" class="bd-links" id="bd-docs-nav">
+<div class="bd-toc-item active">
+<ul class="nav bd-sidenav">
+<li class="toctree-l1">
+<a class="reference internal" href="../../intro.html">
+   Introduction
+  </a>
+</li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children">
+<a class="reference internal" href="../../Schedule/schedule_intro.html">
+   Schedule
+  </a>
+<input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox">
+<label for="toctree-checkbox-1">
+<i class="fas fa-chevron-down">
+</i>
+</label>
+<ul>
+<li class="toctree-l2">
+<a class="reference internal" href="../../Schedule/daily_schedules.html">
+     General schedule
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../Schedule/shared_calendars.html">
+     Shared calendars
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../Schedule/timezone_widget.html">
+     Timezone widget
+    </a>
+</li>
+</ul>
+</input></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children">
+<a class="reference internal" href="../../TechnicalHelp/tech_intro.html">
+   Technical Help
+  </a>
+<input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+<label for="toctree-checkbox-2">
+<i class="fas fa-chevron-down">
+</i>
+</label>
+<ul>
+<li class="toctree-l2 has-children">
+<a class="reference internal" href="../../TechnicalHelp/Jupyterbook.html">
+     Using jupyterbook
+    </a>
+<input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+<label for="toctree-checkbox-3">
+<i class="fas fa-chevron-down">
+</i>
+</label>
+<ul>
+<li class="toctree-l3">
+<a class="reference internal" href="../../TechnicalHelp/Tutorial_colab.html">
+       Using Google Colab
+      </a>
+</li>
+<li class="toctree-l3">
+<a class="reference internal" href="../../TechnicalHelp/Tutorial_kaggle.html">
+       Using Kaggle
+      </a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../TechnicalHelp/Discord.html">
+     Using discord
+    </a>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption">
+<span class="caption-text">
+  Pre-reqs Refresher
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children">
+<a class="reference internal" href="../../W0D0_NeuroVideoSeries/chapter_title.html">
+   Neuro Video Series (W0D0)
+  </a>
+<input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+<label for="toctree-checkbox-4">
+<i class="fas fa-chevron-down">
+</i>
+</label>
+<ul>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W0D0_NeuroVideoSeries/student/W0D0_Tutorial1.html">
+     Intro
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W0D0_NeuroVideoSeries/student/W0D0_Tutorial2.html">
+     Human Psychophysics
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W0D0_NeuroVideoSeries/student/W0D0_Tutorial3.html">
+     Behavioral Readout
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W0D0_NeuroVideoSeries/student/W0D0_Tutorial4.html">
+     Live in Lab
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W0D0_NeuroVideoSeries/student/W0D0_Tutorial5.html">
+     Brain Signals: Spiking Activity
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W0D0_NeuroVideoSeries/student/W0D0_Tutorial6.html">
+     Brain Signals: LFP
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W0D0_NeuroVideoSeries/student/W0D0_Tutorial7.html">
+     Brain Signals: EEG &amp; MEG
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W0D0_NeuroVideoSeries/student/W0D0_Tutorial8.html">
+     Brain Signals: fMRI
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W0D0_NeuroVideoSeries/student/W0D0_Tutorial9.html">
+     Brain Signals: Calcium Imaging
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W0D0_NeuroVideoSeries/student/W0D0_Tutorial10.html">
+     Stimulus Representation
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W0D0_NeuroVideoSeries/student/W0D0_Tutorial11.html">
+     Neurotransmitters
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W0D0_NeuroVideoSeries/student/W0D0_Tutorial12.html">
+     Neurons to Consciousness
+    </a>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children">
+<a class="reference internal" href="../../W0D1_PythonWorkshop1/chapter_title.html">
+   Python Workshop 1 (W0D1)
+  </a>
+<input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+<label for="toctree-checkbox-5">
+<i class="fas fa-chevron-down">
+</i>
+</label>
+<ul>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W0D1_PythonWorkshop1/student/W0D1_Tutorial1.html">
+     Tutorial: LIF Neuron Part I
+    </a>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children">
+<a class="reference internal" href="../../W0D2_PythonWorkshop2/chapter_title.html">
+   Python Workshop 2 (W0D2)
+  </a>
+<input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+<label for="toctree-checkbox-6">
+<i class="fas fa-chevron-down">
+</i>
+</label>
+<ul>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W0D2_PythonWorkshop2/student/W0D2_Tutorial1.html">
+     Tutorial 1: LIF Neuron Part II
+    </a>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children">
+<a class="reference internal" href="../../W0D3_LinearAlgebra/chapter_title.html">
+   Linear Algebra (W0D3)
+  </a>
+<input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+<label for="toctree-checkbox-7">
+<i class="fas fa-chevron-down">
+</i>
+</label>
+<ul>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W0D3_LinearAlgebra/student/W0D3_Tutorial1.html">
+     Tutorial 1: Vectors
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W0D3_LinearAlgebra/student/W0D3_Tutorial2.html">
+     Tutorial 2: Matrices
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W0D3_LinearAlgebra/student/W0D3_Tutorial3.html">
+     Bonus Tutorial: Discrete Dynamical Systems
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W0D3_LinearAlgebra/W0D3_Outro.html">
+     Outro
+    </a>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children">
+<a class="reference internal" href="../../W0D4_Calculus/chapter_title.html">
+   Calculus (W0D4)
+  </a>
+<input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+<label for="toctree-checkbox-8">
+<i class="fas fa-chevron-down">
+</i>
+</label>
+<ul>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W0D4_Calculus/student/W0D4_Tutorial1.html">
+     Tutorial 1: Differentiation and Integration
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W0D4_Calculus/student/W0D4_Tutorial2.html">
+     Tutorial 2: Differential Equations
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W0D4_Calculus/student/W0D4_Tutorial3.html">
+     Tutorial 3: Numerical Methods
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W0D4_Calculus/W0D4_Outro.html">
+     Outro
+    </a>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children">
+<a class="reference internal" href="../../W0D5_Statistics/chapter_title.html">
+   Statistics (W0D5)
+  </a>
+<input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+<label for="toctree-checkbox-9">
+<i class="fas fa-chevron-down">
+</i>
+</label>
+<ul>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W0D5_Statistics/student/W0D5_Tutorial1.html">
+     Tutorial 1: Probability Distributions
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W0D5_Statistics/student/W0D5_Tutorial2.html">
+     Tutorial 2: Statistical Inference
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W0D5_Statistics/W0D5_Outro.html">
+     Outro
+    </a>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption">
+<span class="caption-text">
+  Intro to Modeling
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children">
+<a class="reference internal" href="../../W1D1_ModelTypes/chapter_title.html">
+   Model Types (W1D1)
+  </a>
+<input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+<label for="toctree-checkbox-10">
+<i class="fas fa-chevron-down">
+</i>
+</label>
+<ul>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W1D1_ModelTypes/W1D1_Intro.html">
+     Intro
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W1D1_ModelTypes/student/W1D1_Tutorial1.html">
+     Tutorial 1: “What” models
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W1D1_ModelTypes/student/W1D1_Tutorial2.html">
+     Tutorial 2: “How” models
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W1D1_ModelTypes/student/W1D1_Tutorial3.html">
+     Tutorial 3: “Why” models
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W1D1_ModelTypes/student/W1D1_Tutorial4.html">
+     Tutorial 4: Model Dicussions
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W1D1_ModelTypes/W1D1_Outro.html">
+     Outro
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W1D1_ModelTypes/further_reading.html">
+     Suggested further readings
+    </a>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children">
+<a class="reference internal" href="../../W1D2_ModelingPractice/chapter_title.html">
+   Modeling Practice (W1D2)
+  </a>
+<input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+<label for="toctree-checkbox-11">
+<i class="fas fa-chevron-down">
+</i>
+</label>
+<ul>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W1D2_ModelingPractice/W1D2_Intro.html">
+     Intro
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W1D2_ModelingPractice/student/W1D2_Tutorial1.html">
+     Tutorial 1: Framing the Question
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W1D2_ModelingPractice/W1D2_Outro.html">
+     Outro
+    </a>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption">
+<span class="caption-text">
+  Machine Learning
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children">
+<a class="reference internal" href="../../W1D3_ModelFitting/chapter_title.html">
+   Model Fitting (W1D3)
+  </a>
+<input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+<label for="toctree-checkbox-12">
+<i class="fas fa-chevron-down">
+</i>
+</label>
+<ul>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W1D3_ModelFitting/W1D3_Intro.html">
+     Intro
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W1D3_ModelFitting/student/W1D3_Tutorial1.html">
+     Tutorial 1: Linear regression with MSE
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W1D3_ModelFitting/student/W1D3_Tutorial2.html">
+     Tutorial 2: Linear regression with MLE
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W1D3_ModelFitting/student/W1D3_Tutorial3.html">
+     Tutorial 3: Confidence intervals and bootstrapping
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W1D3_ModelFitting/student/W1D3_Tutorial4.html">
+     Tutorial 4: Multiple linear regression and polynomial regression
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W1D3_ModelFitting/student/W1D3_Tutorial5.html">
+     Tutorial 5: Model Selection: Bias-variance trade-off
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W1D3_ModelFitting/student/W1D3_Tutorial6.html">
+     Tutorial 6: Model Selection: Cross-validation
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W1D3_ModelFitting/W1D3_Outro.html">
+     Outro
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W1D3_ModelFitting/further_reading.html">
+     Suggested further readings
+    </a>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children">
+<a class="reference internal" href="../../W1D4_GeneralizedLinearModels/chapter_title.html">
+   Generalized Linear Models (W1D4)
+  </a>
+<input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/>
+<label for="toctree-checkbox-13">
+<i class="fas fa-chevron-down">
+</i>
+</label>
+<ul>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W1D4_GeneralizedLinearModels/W1D4_Intro.html">
+     Intro
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W1D4_GeneralizedLinearModels/student/W1D4_Tutorial1.html">
+     Tutorial 1: GLMs for Encoding
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W1D4_GeneralizedLinearModels/student/W1D4_Tutorial2.html">
+     Tutorial 2: Classifiers and regularizers
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W1D4_GeneralizedLinearModels/W1D4_Outro.html">
+     Outro
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W1D4_GeneralizedLinearModels/further_reading.html">
+     Suggested further readings
+    </a>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children">
+<a class="reference internal" href="../../W1D5_DimensionalityReduction/chapter_title.html">
+   Dimensionality Reduction (W1D5)
+  </a>
+<input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/>
+<label for="toctree-checkbox-14">
+<i class="fas fa-chevron-down">
+</i>
+</label>
+<ul>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W1D5_DimensionalityReduction/W1D5_Intro.html">
+     Intro
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W1D5_DimensionalityReduction/student/W1D5_Tutorial1.html">
+     Tutorial 1: Geometric view of data
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W1D5_DimensionalityReduction/student/W1D5_Tutorial2.html">
+     Tutorial 2: Principal Component Analysis
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W1D5_DimensionalityReduction/student/W1D5_Tutorial3.html">
+     Tutorial 3: Dimensionality Reduction &amp; Reconstruction
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W1D5_DimensionalityReduction/student/W1D5_Tutorial4.html">
+     Tutorial 4:  Nonlinear Dimensionality Reduction
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W1D5_DimensionalityReduction/W1D5_Outro.html">
+     Outro
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W1D5_DimensionalityReduction/further_reading.html">
+     Suggested further readings
+    </a>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children">
+<a class="reference internal" href="../../W2D1_DeepLearning/chapter_title.html">
+   Deep Learning (W2D1)
+  </a>
+<input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/>
+<label for="toctree-checkbox-15">
+<i class="fas fa-chevron-down">
+</i>
+</label>
+<ul>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W2D1_DeepLearning/W2D1_Intro.html">
+     Intro
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W2D1_DeepLearning/student/W2D1_Tutorial1.html">
+     Tutorial 1: Decoding Neural Responses
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W2D1_DeepLearning/student/W2D1_Tutorial2.html">
+     Tutorial 2: Convolutional Neural Networks
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W2D1_DeepLearning/student/W2D1_Tutorial3.html">
+     Tutorial 2: Building and Evaluating Normative Encoding Models
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W2D1_DeepLearning/W2D1_Outro.html">
+     Outro
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W2D1_DeepLearning/further_reading.html">
+     Suggested further readings
+    </a>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption">
+<span class="caption-text">
+  Dynamical Systems
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children">
+<a class="reference internal" href="../../W2D2_LinearSystems/chapter_title.html">
+   Linear Systems (W2D2)
+  </a>
+<input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" type="checkbox"/>
+<label for="toctree-checkbox-16">
+<i class="fas fa-chevron-down">
+</i>
+</label>
+<ul>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W2D2_LinearSystems/W2D2_Intro.html">
+     Intro
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W2D2_LinearSystems/student/W2D2_Tutorial1.html">
+     Tutorial 1: Linear dynamical systems
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W2D2_LinearSystems/student/W2D2_Tutorial2.html">
+     Tutorial 2: Markov Processes
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W2D2_LinearSystems/student/W2D2_Tutorial3.html">
+     Tutorial 3: Combining determinism and stochasticity
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W2D2_LinearSystems/student/W2D2_Tutorial4.html">
+     Tutorial 4: Autoregressive models
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W2D2_LinearSystems/W2D2_Outro.html">
+     Outro
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W2D2_LinearSystems/further_reading.html">
+     Suggested further readings
+    </a>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children">
+<a class="reference internal" href="../chapter_title.html">
+   Biological Neuron Models (W2D3)
+  </a>
+<input checked="" class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" type="checkbox"/>
+<label for="toctree-checkbox-17">
+<i class="fas fa-chevron-down">
+</i>
+</label>
+<ul class="current">
+<li class="toctree-l2">
+<a class="reference internal" href="../W2D3_Intro.html">
+     Intro
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="W2D3_Tutorial1.html">
+     Tutorial 1: The Leaky Integrate-and-Fire (LIF) Neuron Model
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="W2D3_Tutorial2.html">
+     Tutorial 2: Effects of Input Correlation
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="W2D3_Tutorial3.html">
+     Tutorial 3: Synaptic transmission - Models of static and dynamic synapses
+    </a>
+</li>
+<li class="toctree-l2 current active">
+<a class="current reference internal" href="#">
+     Tutorial 4: Spike-timing dependent plasticity (STDP)
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../W2D3_Outro.html">
+     Outro
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../further_reading.html">
+     Suggested further readings
+    </a>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children">
+<a class="reference internal" href="../../W2D4_DynamicNetworks/chapter_title.html">
+   Dynamic Networks (W2D4)
+  </a>
+<input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" type="checkbox"/>
+<label for="toctree-checkbox-18">
+<i class="fas fa-chevron-down">
+</i>
+</label>
+<ul>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W2D4_DynamicNetworks/W2D4_Intro.html">
+     Intro
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W2D4_DynamicNetworks/student/W2D4_Tutorial1.html">
+     Tutorial 1: Neural Rate Models
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W2D4_DynamicNetworks/student/W2D4_Tutorial2.html">
+     Tutorial 2: Wilson-Cowan Model
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W2D4_DynamicNetworks/W2D4_Outro.html">
+     Outro
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W2D4_DynamicNetworks/further_reading.html">
+     Suggested further readings
+    </a>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption">
+<span class="caption-text">
+  Stochastic Processes
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children">
+<a class="reference internal" href="../../W3D1_BayesianDecisions/chapter_title.html">
+   Bayesian Decisions (W3D1)
+  </a>
+<input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" type="checkbox"/>
+<label for="toctree-checkbox-19">
+<i class="fas fa-chevron-down">
+</i>
+</label>
+<ul>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W3D1_BayesianDecisions/W3D1_Intro.html">
+     Intro
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W3D1_BayesianDecisions/student/W3D1_Tutorial1.html">
+     Tutorial 1: Bayes with a binary hidden state
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W3D1_BayesianDecisions/student/W3D1_Tutorial2.html">
+     Tutorial 2: Bayesian inference and decisions with continuous hidden state
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W3D1_BayesianDecisions/student/W3D1_Tutorial3.html">
+     Bonus Tutorial:Fitting to data
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W3D1_BayesianDecisions/W3D1_Outro.html">
+     Outro
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W3D1_BayesianDecisions/further_reading.html">
+     Suggested further readings
+    </a>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children">
+<a class="reference internal" href="../../W3D2_HiddenDynamics/chapter_title.html">
+   Hidden Dynamics (W3D2)
+  </a>
+<input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" type="checkbox"/>
+<label for="toctree-checkbox-20">
+<i class="fas fa-chevron-down">
+</i>
+</label>
+<ul>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W3D2_HiddenDynamics/W3D2_Intro.html">
+     Intro
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W3D2_HiddenDynamics/student/W3D2_Tutorial1.html">
+     Tutorial 1: Sequential Probability Ratio Test
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W3D2_HiddenDynamics/student/W3D2_Tutorial2.html">
+     Tutorial 2: Hidden Markov Model
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W3D2_HiddenDynamics/student/W3D2_Tutorial3.html">
+     Tutorial 3: 1D Kalman Filter
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W3D2_HiddenDynamics/student/W3D2_Tutorial4.html">
+     Tutorial 4: 2D Kalman Filter
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W3D2_HiddenDynamics/W3D2_Outro.html">
+     Outro
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W3D2_HiddenDynamics/further_reading.html">
+     Suggested further readings
+    </a>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children">
+<a class="reference internal" href="../../W3D3_OptimalControl/chapter_title.html">
+   Optimal Control (W3D3)
+  </a>
+<input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" type="checkbox"/>
+<label for="toctree-checkbox-21">
+<i class="fas fa-chevron-down">
+</i>
+</label>
+<ul>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W3D3_OptimalControl/W3D3_Intro.html">
+     Intro
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W3D3_OptimalControl/student/W3D3_Tutorial1.html">
+     Tutorial 1: Optimal Control for Discrete States
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W3D3_OptimalControl/student/W3D3_Tutorial2.html">
+     Tutorial 2: Optimal Control for Continuous State
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W3D3_OptimalControl/W3D3_Outro.html">
+     Outro
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W3D3_OptimalControl/further_reading.html">
+     Suggested further readings
+    </a>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children">
+<a class="reference internal" href="../../W3D4_ReinforcementLearning/chapter_title.html">
+   Reinforcement Learning (W3D4)
+  </a>
+<input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" type="checkbox"/>
+<label for="toctree-checkbox-22">
+<i class="fas fa-chevron-down">
+</i>
+</label>
+<ul>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W3D4_ReinforcementLearning/W3D4_Intro.html">
+     Intro
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W3D4_ReinforcementLearning/student/W3D4_Tutorial1.html">
+     Tutorial 1: Learning to Predict
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W3D4_ReinforcementLearning/student/W3D4_Tutorial2.html">
+     Tutorial 2: Learning to Act: Multi-Armed Bandits
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W3D4_ReinforcementLearning/student/W3D4_Tutorial3.html">
+     Tutorial 3: Learning to Act: Q-Learning
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W3D4_ReinforcementLearning/student/W3D4_Tutorial4.html">
+     Tutorial 4: From Reinforcement Learning to Planning
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W3D4_ReinforcementLearning/W3D4_Outro.html">
+     Outro
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W3D4_ReinforcementLearning/further_reading.html">
+     Suggested further readings
+    </a>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children">
+<a class="reference internal" href="../../W3D5_NetworkCausality/chapter_title.html">
+   Network Causality (W3D5)
+  </a>
+<input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" type="checkbox"/>
+<label for="toctree-checkbox-23">
+<i class="fas fa-chevron-down">
+</i>
+</label>
+<ul>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W3D5_NetworkCausality/W3D5_Intro.html">
+     Intro
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W3D5_NetworkCausality/student/W3D5_Tutorial1.html">
+     Tutorial 1: Interventions
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W3D5_NetworkCausality/student/W3D5_Tutorial2.html">
+     Tutorial 2: Correlations
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W3D5_NetworkCausality/student/W3D5_Tutorial3.html">
+     Tutorial 3: Simultaneous fitting/regression
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W3D5_NetworkCausality/student/W3D5_Tutorial4.html">
+     Tutorial 4: Instrumental Variables
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W3D5_NetworkCausality/W3D5_Outro.html">
+     Outro
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../W3D5_NetworkCausality/further_reading.html">
+     Suggested further readings
+    </a>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption">
+<span class="caption-text">
+  Project Booklet
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1">
+<a class="reference internal" href="../../../projects/README.html">
+   Introduction to projects
+  </a>
+</li>
+<li class="toctree-l1">
+<a class="reference internal" href="../../../projects/docs/project_guidance.html">
+   Daily guidance for projects
+  </a>
+</li>
+<li class="toctree-l1 has-children">
+<a class="reference internal" href="../../../projects/modelingsteps/intro.html">
+   Modeling Step-by-Step Guide
+  </a>
+<input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" type="checkbox"/>
+<label for="toctree-checkbox-24">
+<i class="fas fa-chevron-down">
+</i>
+</label>
+<ul>
+<li class="toctree-l2">
+<a class="reference internal" href="../../../projects/modelingsteps/ModelingSteps_1through4.html">
+     Modeling Steps 1 - 4
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../../projects/modelingsteps/ModelingSteps_5through10.html">
+     Modeling Steps 5 - 10
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../../projects/modelingsteps/TrainIllusionModel.html">
+     Example Model Project: the Train Illusion
+    </a>
+</li>
+<li class="toctree-l2">
+<a class="reference internal" href="../../../projects/modelingsteps/TrainIllusionDataProject.html">
+     Example Data Project: the Train Illusion
+    </a>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children">
+<a class="reference internal" href="../../../projects/docs/datasets_overview.html">
+   Datasets
+  </a>
+<input class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" type="checkbox"/>
+<label for="toctree-checkbox-25">
+<i class="fas fa-chevron-down">
+</i>
+</label>
+<ul>
+<li class="toctree-l2 has-children">
+<a class="reference internal" href="../../../projects/docs/neurons.html">
+     Neurons
+    </a>
+<input class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" type="checkbox"/>
+<label for="toctree-checkbox-26">
+<i class="fas fa-chevron-down">
+</i>
+</label>
+<ul>
+<li class="toctree-l3">
+<a class="reference internal" href="../../../projects/neurons/README.html">
+       Guide
+      </a>
+</li>
+<li class="toctree-l3">
+<a class="reference internal" href="../../../projects/neurons/neurons_videos.html">
+       Overview videos
+      </a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children">
+<a class="reference internal" href="../../../projects/docs/fMRI.html">
+     fMRI
+    </a>
+<input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" type="checkbox"/>
+<label for="toctree-checkbox-27">
+<i class="fas fa-chevron-down">
+</i>
+</label>
+<ul>
+<li class="toctree-l3">
+<a class="reference internal" href="../../../projects/fMRI/README.html">
+       Guide
+      </a>
+</li>
+<li class="toctree-l3">
+<a class="reference internal" href="../../../projects/fMRI/fMRI_videos.html">
+       Overview videos
+      </a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children">
+<a class="reference internal" href="../../../projects/docs/ECoG.html">
+     ECoG
+    </a>
+<input class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" type="checkbox"/>
+<label for="toctree-checkbox-28">
+<i class="fas fa-chevron-down">
+</i>
+</label>
+<ul>
+<li class="toctree-l3">
+<a class="reference internal" href="../../../projects/ECoG/README.html">
+       Guide
+      </a>
+</li>
+<li class="toctree-l3">
+<a class="reference internal" href="../../../projects/ECoG/ECoG_videos.html">
+       Overview videos
+      </a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children">
+<a class="reference internal" href="../../../projects/docs/behavior.html">
+     Behavior
+    </a>
+<input class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" type="checkbox"/>
+<label for="toctree-checkbox-29">
+<i class="fas fa-chevron-down">
+</i>
+</label>
+<ul>
+<li class="toctree-l3">
+<a class="reference internal" href="../../../projects/behavior/README.html">
+       Guide
+      </a>
+</li>
+<li class="toctree-l3">
+<a class="reference internal" href="../../../projects/behavior/behavior_videos.html">
+       Overview videos
+      </a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1">
+<a class="reference internal" href="../../../projects/docs/project_templates.html">
+   Project Templates
+  </a>
+</li>
+<li class="toctree-l1">
+<a class="reference internal" href="../../../projects/docs/project_2020_highlights.html">
+   Projects 2020
+  </a>
+</li>
+<li class="toctree-l1">
+<a class="reference internal" href="../../../projects/docs/abstract_guidance.html">
+   How to write an abstract
+  </a>
+</li>
+</ul>
+</div>
+</nav> <!-- To handle the deprecated key -->
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+</div>
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+<div class="topbar container-xl fixed-top">
+<div class="topbar-contents row">
+<div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+<div class="col pl-md-4 topbar-main">
+<button aria-controls="site-navigation" aria-expanded="true" aria-label="Toggle navigation" class="navbar-toggler ml-0" data-placement="left" data-target=".site-navigation" data-toggle="tooltip" id="navbar-toggler" title="Toggle navigation" type="button">
+<i class="fas fa-bars"></i>
+<i class="fas fa-arrow-left"></i>
+<i class="fas fa-arrow-up"></i>
+</button>
+<div class="dropdown-buttons-trigger">
+<button aria-label="Download this page" class="btn btn-secondary topbarbtn" id="dropdown-buttons-trigger"><i class="fas fa-download"></i></button>
+<div class="dropdown-buttons">
+<!-- ipynb file if we had a myst markdown file -->
+<!-- Download raw file -->
+<a class="dropdown-buttons" href="../../../_sources/tutorials/W2D3_BiologicalNeuronModels/student/W2D3_Tutorial4.ipynb"><button class="btn btn-secondary topbarbtn" data-placement="left" data-toggle="tooltip" title="Download source file" type="button">.ipynb</button></a>
+<!-- Download PDF via print -->
+<button class="btn btn-secondary topbarbtn" data-placement="left" data-toggle="tooltip" id="download-print" onclick="window.print()" title="Print to PDF" type="button">.pdf</button>
+</div>
+</div>
+<!-- Source interaction buttons -->
+<div class="dropdown-buttons-trigger">
+<button aria-label="Connect with source repository" class="btn btn-secondary topbarbtn" id="dropdown-buttons-trigger"><i class="fab fa-github"></i></button>
+<div class="dropdown-buttons sourcebuttons">
+<a class="repository-button" href="https://github.com/NeuromatchAcademy/course-content"><button class="btn btn-secondary topbarbtn" data-placement="left" data-toggle="tooltip" title="Source repository" type="button"><i class="fab fa-github"></i>repository</button></a>
+<a class="issues-button" href="https://github.com/NeuromatchAcademy/course-content/issues/new?title=Issue%20on%20page%20%2Ftutorials/W2D3_BiologicalNeuronModels/student/W2D3_Tutorial4.html&amp;body=Your%20issue%20content%20here."><button class="btn btn-secondary topbarbtn" data-placement="left" data-toggle="tooltip" title="Open an issue" type="button"><i class="fas fa-lightbulb"></i>open issue</button></a>
+</div>
+</div>
+<!-- Full screen (wrap in <a> to have style consistency -->
+<a class="full-screen-button"><button aria-label="Fullscreen mode" class="btn btn-secondary topbarbtn" data-placement="bottom" data-toggle="tooltip" onclick="toggleFullScreen()" title="Fullscreen mode" type="button"><i class="fas fa-expand"></i></button></a>
+<!-- Launch buttons -->
+</div>
+<!-- Table of contents -->
+<div class="d-none d-md-block col-md-2 bd-toc show">
+<div class="tocsection onthispage pt-5 pb-3">
+<i class="fas fa-list"></i> Contents
+            </div>
+<nav id="bd-toc-nav">
+<ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry">
+<a class="reference internal nav-link" href="#">
+   Tutorial 4: Spike-timing dependent plasticity (STDP)
+  </a>
+</li>
+<li class="toc-h1 nav-item toc-entry">
+<a class="reference internal nav-link" href="#tutorial-objectives">
+   Tutorial Objectives
+  </a>
+</li>
+<li class="toc-h1 nav-item toc-entry">
+<a class="reference internal nav-link" href="#setup">
+   Setup
+  </a>
+<ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry">
+<a class="reference internal nav-link" href="#figure-settings">
+     Figure Settings
+    </a>
+</li>
+<li class="toc-h2 nav-item toc-entry">
+<a class="reference internal nav-link" href="#helper-functions">
+     Helper functions
+    </a>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry">
+<a class="reference internal nav-link" href="#section-1-spike-timing-dependent-plasticity-stdp">
+   Section 1: Spike-timing dependent plasticity (STDP)
+  </a>
+<ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry">
+<a class="reference internal nav-link" href="#video-1-stdp">
+     Video 1: STDP
+    </a>
+</li>
+<li class="toc-h2 nav-item toc-entry">
+<a class="reference internal nav-link" href="#model-of-stdp">
+     Model of STDP
+    </a>
+</li>
+<li class="toc-h2 nav-item toc-entry">
+<a class="reference internal nav-link" href="#exercise-1-compute-the-stdp-changes-delta-w">
+     Exercise 1: Compute the STDP changes
+     <span class="math notranslate nohighlight">
+      \(\Delta W\)
+     </span>
+</a>
+</li>
+<li class="toc-h2 nav-item toc-entry">
+<a class="reference internal nav-link" href="#keeping-track-of-pre-and-postsynaptic-spikes">
+     Keeping track of pre- and postsynaptic spikes
+    </a>
+</li>
+<li class="toc-h2 nav-item toc-entry">
+<a class="reference internal nav-link" href="#visualization-of-p">
+     Visualization of
+     <span class="math notranslate nohighlight">
+      \(P\)
+     </span>
+</a>
+</li>
+<li class="toc-h2 nav-item toc-entry">
+<a class="reference internal nav-link" href="#exercise-2-compute-dp">
+     Exercise 2: Compute
+     <span class="math notranslate nohighlight">
+      \(dP\)
+     </span>
+</a>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry">
+<a class="reference internal nav-link" href="#section-2-implementation-of-stdp">
+   Section 2: Implementation of STDP
+  </a>
+<ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry">
+<a class="reference internal nav-link" href="#lif-neuron-connected-with-synapses-that-show-stdp">
+     LIF neuron connected with synapses that show STDP
+    </a>
+</li>
+<li class="toc-h2 nav-item toc-entry">
+<a class="reference internal nav-link" href="#function-for-lif-neuron-with-stdp-synapses">
+     Function for LIF neuron with STDP synapses
+    </a>
+</li>
+<li class="toc-h2 nav-item toc-entry">
+<a class="reference internal nav-link" href="#evolution-of-excitatory-synaptic-conductance">
+     Evolution of excitatory synaptic conductance
+    </a>
+<ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry">
+<a class="reference internal nav-link" href="#figures-of-the-evolution-of-synaptic-conductance">
+       Figures of the evolution of synaptic conductance
+      </a>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry">
+<a class="reference internal nav-link" href="#think">
+     Think!
+    </a>
+</li>
+<li class="toc-h2 nav-item toc-entry">
+<a class="reference internal nav-link" href="#distribution-of-synaptic-weight">
+     Distribution of synaptic weight
+    </a>
+<ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry">
+<a class="reference internal nav-link" href="#functions-for-simulating-a-lif-neuron-with-stdp-synapses">
+       Functions for simulating a LIF neuron with STDP synapses
+      </a>
+</li>
+<li class="toc-h3 nav-item toc-entry">
+<a class="reference internal nav-link" href="#interactive-demo-example-of-an-lif-model-with-stdp">
+       Interactive Demo: Example of an LIF model with STDP
+      </a>
+<ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry">
+<a class="reference internal nav-link" href="#id1">
+</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry">
+<a class="reference internal nav-link" href="#id2">
+     Think!
+    </a>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry">
+<a class="reference internal nav-link" href="#section-3-effect-of-input-correlations">
+   Section 3: Effect of input correlations
+  </a>
+<ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry">
+<a class="reference internal nav-link" href="#function-for-lif-neuron-with-stdp-synapses-receiving-correlated-inputs">
+     Function for LIF neuron with STDP synapses receiving correlated inputs
+    </a>
+</li>
+<li class="toc-h2 nav-item toc-entry">
+<a class="reference internal nav-link" href="#interactive-demo-lif-model-with-plastic-synapses-receiving-correlated-inputs">
+     Interactive Demo: LIF model with plastic synapses receiving correlated inputs
+    </a>
+<ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry">
+<a class="reference internal nav-link" href="#id3">
+</a>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry">
+<a class="reference internal nav-link" href="#id4">
+     Think!
+    </a>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry">
+<a class="reference internal nav-link" href="#summary">
+   Summary
+  </a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="row" id="main-content">
+<div class="col-12 col-md-9 pl-md-3 pr-md-0">
+<div>
+<p><a href="https://colab.research.google.com/github/NeuromatchAcademy/course-content/blob/master/tutorials/W2D3_BiologicalNeuronModels/student/W2D3_Tutorial4.ipynb" target="_blank"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg"/></a></p>
+<div class="section" id="tutorial-4-spike-timing-dependent-plasticity-stdp">
+<h1>Tutorial 4: Spike-timing dependent plasticity (STDP)<a class="headerlink" href="#tutorial-4-spike-timing-dependent-plasticity-stdp" title="Permalink to this headline">¶</a></h1>
+<p><strong>Week 2, Day 3: Biological Neuron Models</strong></p>
+<p><strong>By Neuromatch Academy</strong></p>
+<p><strong>Content creators:</strong> Qinglong Gu, Songtin Li, John Murray, Richard Naud, Arvind Kumar</p>
+<p><strong>Content reviewers:</strong> Spiros Chavlis, Lorenzo Fontolan, Richard Gao, Matthew Krause</p>
+<p><strong>Our 2021 Sponsors, including Presenting Sponsor Facebook Reality Labs</strong></p>
+<p align="center"><img src="https://github.com/NeuromatchAcademy/widgets/blob/master/sponsors.png?raw=True"/></p></div>
+<hr class="docutils"/>
+<div class="section" id="tutorial-objectives">
+<h1>Tutorial Objectives<a class="headerlink" href="#tutorial-objectives" title="Permalink to this headline">¶</a></h1>
+<p>In this tutorial, we will focus on building a model of a synapse in which its synaptic strength changes as a function of the relative timing (i.e., time difference) between the spikes of the presynaptic and postsynaptic neurons, respectively. This change in the synaptic weight is known as <strong>spike-timing dependent plasticity (STDP)</strong>.</p>
+<p>Our goals for this tutorial are to:</p>
+<ul class="simple">
+<li><p>build a model of synapse that show STDP</p></li>
+<li><p>study how correlations in input spike trains influence the distribution of synaptic weights</p></li>
+</ul>
+<p>Towards these goals, we will model the presynaptic input as Poisson type spike trains. The postsynaptic neuron will be modeled as an LIF neuron (see Tutorial 1).</p>
+<p>Throughout this tutorial, we assume that a single postsynaptic neuron is driven by <span class="math notranslate nohighlight">\(N\)</span> presynaptic neurons. That is, there are <span class="math notranslate nohighlight">\(N\)</span> synapses, and we will study how their weights depend on the statistics or the input spike trains and their timing with respect to the spikes of the postsynaptic neuron.</p>
+</div>
+<hr class="docutils"/>
+<div class="section" id="setup">
+<h1>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import libraries</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">time</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="figure-settings">
+<h2>Figure Settings<a class="headerlink" href="#figure-settings" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># @title Figure Settings</span>
+<span class="kn">import</span> <span class="nn">ipywidgets</span> <span class="k">as</span> <span class="nn">widgets</span>       <span class="c1"># interactive display</span>
+
+<span class="o">%</span><span class="k">config</span> InlineBackend.figure_format='retina'
+<span class="c1"># use NMA plot style</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">"https://raw.githubusercontent.com/NeuromatchAcademy/course-content/master/nma.mplstyle"</span><span class="p">)</span>
+<span class="n">my_layout</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="helper-functions">
+<h2>Helper functions<a class="headerlink" href="#helper-functions" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># @title Helper functions</span>
+
+
+<span class="k">def</span> <span class="nf">default_pars_STDP</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+  <span class="n">pars</span> <span class="o">=</span> <span class="p">{}</span>
+
+  <span class="c1"># typical neuron parameters</span>
+  <span class="n">pars</span><span class="p">[</span><span class="s1">'V_th'</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">55.</span>     <span class="c1"># spike threshold [mV]</span>
+  <span class="n">pars</span><span class="p">[</span><span class="s1">'V_reset'</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">75.</span>  <span class="c1"># reset potential [mV]</span>
+  <span class="n">pars</span><span class="p">[</span><span class="s1">'tau_m'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">10.</span>     <span class="c1"># membrane time constant [ms]</span>
+  <span class="n">pars</span><span class="p">[</span><span class="s1">'V_init'</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">65.</span>   <span class="c1"># initial potential [mV]</span>
+  <span class="n">pars</span><span class="p">[</span><span class="s1">'V_L'</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">75.</span>      <span class="c1"># leak reversal potential [mV]</span>
+  <span class="n">pars</span><span class="p">[</span><span class="s1">'tref'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">2.</span>       <span class="c1"># refractory time (ms)</span>
+
+  <span class="c1"># STDP parameters</span>
+  <span class="n">pars</span><span class="p">[</span><span class="s1">'A_plus'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.008</span>                   <span class="c1"># magnitude of LTP</span>
+  <span class="n">pars</span><span class="p">[</span><span class="s1">'A_minus'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pars</span><span class="p">[</span><span class="s1">'A_plus'</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.10</span>  <span class="c1"># magnitude of LTD</span>
+  <span class="n">pars</span><span class="p">[</span><span class="s1">'tau_stdp'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">20.</span>                   <span class="c1"># STDP time constant [ms]</span>
+
+  <span class="c1"># simulation parameters</span>
+  <span class="n">pars</span><span class="p">[</span><span class="s1">'T'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">400.</span>  <span class="c1"># Total duration of simulation [ms]</span>
+  <span class="n">pars</span><span class="p">[</span><span class="s1">'dt'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">.1</span>   <span class="c1"># Simulation time step [ms]</span>
+
+  <span class="c1"># external parameters if any</span>
+  <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+    <span class="n">pars</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+
+  <span class="n">pars</span><span class="p">[</span><span class="s1">'range_t'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">pars</span><span class="p">[</span><span class="s1">'T'</span><span class="p">],</span> <span class="n">pars</span><span class="p">[</span><span class="s1">'dt'</span><span class="p">])</span>  <span class="c1"># Vector of discretized time points [ms]</span>
+
+  <span class="k">return</span> <span class="n">pars</span>
+
+
+<span class="k">def</span> <span class="nf">Poisson_generator</span><span class="p">(</span><span class="n">pars</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">myseed</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+  <span class="sd">"""Generates poisson trains</span>
+
+<span class="sd">  Args:</span>
+<span class="sd">    pars            : parameter dictionary</span>
+<span class="sd">    rate            : noise amplitute [Hz]</span>
+<span class="sd">    n               : number of Poisson trains</span>
+<span class="sd">    myseed          : random seed. int or boolean</span>
+
+<span class="sd">  Returns:</span>
+<span class="sd">    pre_spike_train : spike train matrix, ith row represents whether</span>
+<span class="sd">                      there is a spike in ith spike train over time</span>
+<span class="sd">                      (1 if spike, 0 otherwise)</span>
+<span class="sd">  """</span>
+
+  <span class="c1"># Retrieve simulation parameters</span>
+  <span class="n">dt</span><span class="p">,</span> <span class="n">range_t</span> <span class="o">=</span> <span class="n">pars</span><span class="p">[</span><span class="s1">'dt'</span><span class="p">],</span> <span class="n">pars</span><span class="p">[</span><span class="s1">'range_t'</span><span class="p">]</span>
+  <span class="n">Lt</span> <span class="o">=</span> <span class="n">range_t</span><span class="o">.</span><span class="n">size</span>
+
+  <span class="c1"># set random seed</span>
+  <span class="k">if</span> <span class="n">myseed</span><span class="p">:</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">myseed</span><span class="p">)</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">()</span>
+
+  <span class="c1"># generate uniformly distributed random variables</span>
+  <span class="n">u_rand</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">Lt</span><span class="p">)</span>
+
+  <span class="c1"># generate Poisson train</span>
+  <span class="n">poisson_train</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">*</span> <span class="p">(</span><span class="n">u_rand</span> <span class="o">&lt;</span> <span class="n">rate</span> <span class="o">*</span> <span class="p">(</span><span class="n">dt</span> <span class="o">/</span> <span class="mf">1000.</span><span class="p">))</span>
+
+  <span class="k">return</span> <span class="n">poisson_train</span>
+
+
+<span class="k">def</span> <span class="nf">my_raster_plot</span><span class="p">(</span><span class="n">range_t</span><span class="p">,</span> <span class="n">spike_train</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+  <span class="sd">"""Generates poisson trains</span>
+
+<span class="sd">  Args:</span>
+<span class="sd">    range_t     : time sequence</span>
+<span class="sd">    spike_train : binary spike trains, with shape (N, Lt)</span>
+<span class="sd">    n           : number of Poisson trains plot</span>
+
+<span class="sd">  Returns:</span>
+<span class="sd">    Raster_plot of the spike train</span>
+<span class="sd">  """</span>
+
+  <span class="c1"># Find the number of all the spike trains</span>
+  <span class="n">N</span> <span class="o">=</span> <span class="n">spike_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+  <span class="c1"># n should be smaller than N:</span>
+  <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="n">N</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'The number n exceeds the size of spike trains'</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'The number n is set to be the size of spike trains'</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">N</span>
+
+  <span class="c1"># Raster plot</span>
+  <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">spike_train</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mf">0.</span><span class="p">:</span>
+      <span class="n">t_sp</span> <span class="o">=</span> <span class="n">range_t</span><span class="p">[</span><span class="n">spike_train</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">]</span>  <span class="c1"># spike times</span>
+      <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_sp</span><span class="p">,</span> <span class="n">i</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t_sp</span><span class="p">)),</span> <span class="s1">'k|'</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">markeredgewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="n">range_t</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">range_t</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">])</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Time (ms)'</span><span class="p">)</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Neuron ID'</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">my_example_P</span><span class="p">():</span>
+  <span class="n">spT</span> <span class="o">=</span> <span class="n">pre_spike_train_ex</span><span class="p">[</span><span class="n">pre_spike_train_ex</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.</span><span class="p">,</span> <span class="p">:]</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">211</span><span class="p">)</span>
+  <span class="n">color_set</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'r'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">,</span> <span class="s1">'k'</span><span class="p">,</span> <span class="s1">'orange'</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">]</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">spT</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+    <span class="n">t_sp</span> <span class="o">=</span> <span class="n">pars</span><span class="p">[</span><span class="s1">'range_t'</span><span class="p">][</span><span class="n">spT</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">]</span>   <span class="c1"># spike times</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t_sp</span><span class="p">,</span> <span class="n">i</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t_sp</span><span class="p">)),</span> <span class="s1">'|'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color_set</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+             <span class="n">ms</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">markeredgewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Time (ms)'</span><span class="p">)</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Neuron ID'</span><span class="p">)</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+
+  <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">212</span><span class="p">)</span>
+  <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pars</span><span class="p">[</span><span class="s1">'range_t'</span><span class="p">],</span> <span class="n">P</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="p">:],</span> <span class="n">color</span><span class="o">=</span><span class="n">color_set</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Time (s)'</span><span class="p">)</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'P(t)'</span><span class="p">)</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+
+  <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">mySTDP_plot</span><span class="p">(</span><span class="n">A_plus</span><span class="p">,</span> <span class="n">A_minus</span><span class="p">,</span> <span class="n">tau_stdp</span><span class="p">,</span> <span class="n">time_diff</span><span class="p">,</span> <span class="n">dW</span><span class="p">):</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="o">-</span><span class="mi">5</span> <span class="o">*</span> <span class="n">tau_stdp</span><span class="p">,</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">tau_stdp</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s1">'k'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">':'</span><span class="p">)</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="n">A_minus</span><span class="p">,</span> <span class="n">A_plus</span><span class="p">],</span> <span class="s1">'k'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">':'</span><span class="p">)</span>
+
+  <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time_diff</span><span class="p">[</span><span class="n">time_diff</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">],</span> <span class="n">dW</span><span class="p">[</span><span class="n">time_diff</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">],</span> <span class="s1">'ro'</span><span class="p">)</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time_diff</span><span class="p">[</span><span class="n">time_diff</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">],</span> <span class="n">dW</span><span class="p">[</span><span class="n">time_diff</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">],</span> <span class="s1">'bo'</span><span class="p">)</span>
+
+  <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">'t$_{\mathrm</span><span class="si">{pre}</span><span class="s1">}$ - t$_{\mathrm</span><span class="si">{post}</span><span class="s1">}$ (ms)'</span><span class="p">)</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">'$\Delta$W'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Biphasic STDP'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">)</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<hr class="docutils"/>
+<div class="section" id="section-1-spike-timing-dependent-plasticity-stdp">
+<h1>Section 1: Spike-timing dependent plasticity (STDP)<a class="headerlink" href="#section-1-spike-timing-dependent-plasticity-stdp" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="video-1-stdp">
+<h2>Video 1: STDP<a class="headerlink" href="#video-1-stdp" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">
+{"version_major": 2, "version_minor": 0, "model_id": "ba7478790c564375a3f393b6956998fb"}
+</script></div>
+</div>
+</div>
+<div class="section" id="model-of-stdp">
+<h2>Model of STDP<a class="headerlink" href="#model-of-stdp" title="Permalink to this headline">¶</a></h2>
+<p>The phenomenology of STDP is generally described as a biphasic exponentially decaying function. That is, the instantaneous change in weights is given by:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-b7372315-4416-4d10-84ba-d414aba9deca">
+<span class="eqno">(154)<a class="headerlink" href="#equation-b7372315-4416-4d10-84ba-d414aba9deca" title="Permalink to this equation">¶</a></span>\[\begin{eqnarray}
+&amp; \Delta W &amp;=&amp; A_+ e^{ (t_{pre}-t_{post})/\tau_+}  &amp; \text{if} \hspace{5mm}  t_{post} &gt; t_{pre}&amp; \\
+&amp; \Delta W &amp;=&amp; -A_- e^{- (t_{pre}-t_{post})/\tau_-}   &amp;\text{if} \hspace{5mm} t_{post} &lt; t_{pre}&amp; \\
+\end{eqnarray}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\Delta W\)</span> denotes the change in the synaptic weight, <span class="math notranslate nohighlight">\(A_+\)</span> and <span class="math notranslate nohighlight">\(A_-\)</span> determine the maxmimum amount of synaptic modification (which occurs when the timing difference between presynaptic and postsynaptic spikes is close to zero), <span class="math notranslate nohighlight">\(\tau_+\)</span> and <span class="math notranslate nohighlight">\(\tau_-\)</span> determine the ranges of pre-to-postsynaptic interspike intervals over which synaptic strengthening or weakening occurs. Thus, <span class="math notranslate nohighlight">\(\Delta W &gt; 0 \)</span> means that postsynaptic neuron spikes after the presynaptic neuron.</p>
+<p>This model captures the phenomena that repeated occurrences of presynaptic spikes within a few milliseconds <strong>before</strong> postsynaptic action potentials lead to long-term potentiation (LTP) of the synapse, whereas repeated occurrences of presynaptic spikes <strong>after</strong> the postsynaptic ones lead to long-term depression (LTD) of the same synapse.</p>
+<p>The latency between presynaptic and postsynaptic spike (<span class="math notranslate nohighlight">\(\Delta t\)</span>) is defined as:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-e4c98234-203f-4d07-9ec7-1846ef6231d4">
+<span class="eqno">(155)<a class="headerlink" href="#equation-e4c98234-203f-4d07-9ec7-1846ef6231d4" title="Permalink to this equation">¶</a></span>\[\begin{eqnarray}
+\Delta t = t_{\rm pre} - t_{\rm post}
+\end{eqnarray}\]</div>
+<p>where <span class="math notranslate nohighlight">\(t_{\rm pre}\)</span> and <span class="math notranslate nohighlight">\(t_{\rm post}\)</span> are the timings of the presynaptic and postsynaptic spikes, respectively.</p>
+<p>Complete the following code to set the STDP parameters and plot the STDP function. Note that for simplicity, we assume <strong><span class="math notranslate nohighlight">\(\tau_{+} = \tau_{-} = \tau_{\rm stdp}\)</span></strong>.</p>
+</div>
+<div class="section" id="exercise-1-compute-the-stdp-changes-delta-w">
+<h2>Exercise 1: Compute the STDP changes <span class="math notranslate nohighlight">\(\Delta W\)</span><a class="headerlink" href="#exercise-1-compute-the-stdp-changes-delta-w" title="Permalink to this headline">¶</a></h2>
+<p>Note, as shown above, the expression of <span class="math notranslate nohighlight">\(\Delta W\)</span> is different for <span class="math notranslate nohighlight">\(t_{post}&gt;t_{pre}\)</span> and <span class="math notranslate nohighlight">\(t_{post}&lt;t_{pre}\)</span>. In the code, we use the parameter <code class="docutils literal notranslate"><span class="pre">time_diff</span></code> that describes the <span class="math notranslate nohighlight">\(t_{pre}-t_{post}\)</span>, as given above.</p>
+<p>After implementing the code, you can visualize the STDP kernel, which describes how much the synaptic weight will change given a latency between the presynaptic and postsynaptic spikes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">Delta_W</span><span class="p">(</span><span class="n">pars</span><span class="p">,</span> <span class="n">A_plus</span><span class="p">,</span> <span class="n">A_minus</span><span class="p">,</span> <span class="n">tau_stdp</span><span class="p">):</span>
+  <span class="sd">"""</span>
+<span class="sd">  Plot STDP biphasic exponential decaying function</span>
+
+<span class="sd">  Args:</span>
+<span class="sd">    pars       : parameter dictionary</span>
+<span class="sd">    A_plus     : (float) maxmimum amount of synaptic modification</span>
+<span class="sd">                 which occurs when the timing difference between pre- and</span>
+<span class="sd">                 post-synaptic spikes is positive</span>
+<span class="sd">    A_plus     : (float) maxmimum amount of synaptic modification</span>
+<span class="sd">                 which occurs when the timing difference between pre- and</span>
+<span class="sd">                 post-synaptic spikes is negative</span>
+<span class="sd">    tau_stdp   : the ranges of pre-to-postsynaptic interspike intervals</span>
+<span class="sd">                 over which synaptic strengthening or weakening occurs</span>
+
+<span class="sd">  Returns:</span>
+<span class="sd">    dW         : instantaneous change in weights</span>
+<span class="sd">  """</span>
+  <span class="c1">#######################################################################</span>
+  <span class="c1">## TODO for students: compute dP, then remove the NotImplementedError #</span>
+  <span class="c1"># Fill out when you finish the function</span>
+  <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"Student excercise: compute dW, the change in weights!"</span><span class="p">)</span>
+  <span class="c1">#######################################################################</span>
+  <span class="c1"># STDP change</span>
+  <span class="n">dW</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">time_diff</span><span class="p">))</span>
+  <span class="c1"># Calculate dW for LTP</span>
+  <span class="n">dW</span><span class="p">[</span><span class="n">time_diff</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">...</span>
+  <span class="c1"># Calculate dW for LTD</span>
+  <span class="n">dW</span><span class="p">[</span><span class="n">time_diff</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">...</span>
+
+  <span class="k">return</span> <span class="n">dW</span>
+
+
+<span class="n">pars</span> <span class="o">=</span> <span class="n">default_pars_STDP</span><span class="p">()</span>
+<span class="c1"># Get parameters</span>
+<span class="n">A_plus</span><span class="p">,</span> <span class="n">A_minus</span><span class="p">,</span> <span class="n">tau_stdp</span> <span class="o">=</span> <span class="n">pars</span><span class="p">[</span><span class="s1">'A_plus'</span><span class="p">],</span> <span class="n">pars</span><span class="p">[</span><span class="s1">'A_minus'</span><span class="p">],</span> <span class="n">pars</span><span class="p">[</span><span class="s1">'tau_stdp'</span><span class="p">]</span>
+<span class="c1"># pre_spike time - post_spike time</span>
+<span class="n">time_diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span> <span class="o">*</span> <span class="n">tau_stdp</span><span class="p">,</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">tau_stdp</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+
+<span class="c1"># Uncomment to test your function</span>
+<span class="c1"># dW = Delta_W(pars, A_plus, A_minus, tau_stdp)</span>
+<span class="c1"># mySTDP_plot(A_plus, A_minus, tau_stdp, time_diff, dW)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/NeuromatchAcademy/course-content/tree/master//tutorials/W2D3_BiologicalNeuronModels/solutions/W2D3_Tutorial4_Solution_1ba13cde.py"><em>Click for solution</em></a></p>
+<p><em>Example output:</em></p>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/NeuromatchAcademy/course-content/master/tutorials/W2D3_BiologicalNeuronModels/static/W2D3_Tutorial4_Solution_1ba13cde_0.png"><img align="center" alt="Solution hint" class="align-center" src="https://raw.githubusercontent.com/NeuromatchAcademy/course-content/master/tutorials/W2D3_BiologicalNeuronModels/static/W2D3_Tutorial4_Solution_1ba13cde_0.png" style="width: 560px; height: 416px;"/></a>
+</div>
+<div class="section" id="keeping-track-of-pre-and-postsynaptic-spikes">
+<h2>Keeping track of pre- and postsynaptic spikes<a class="headerlink" href="#keeping-track-of-pre-and-postsynaptic-spikes" title="Permalink to this headline">¶</a></h2>
+<p>Since a neuron will receive numerous presynaptic spike inputs, in order to implement STDP by taking into account different synapses, we first have to keep track of the pre- and postsynaptic spike times throughout the simulation.</p>
+<p>A convenient way to do this is to define the following equation for each postsynaptic neuron:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-b347f641-257c-43fd-9851-36f62c8b9603">
+<span class="eqno">(156)<a class="headerlink" href="#equation-b347f641-257c-43fd-9851-36f62c8b9603" title="Permalink to this equation">¶</a></span>\[\begin{eqnarray}
+\tau_{-} \frac{dM}{dt} = -M
+\end{eqnarray}\]</div>
+<p>and whenever the postsynaptic neuron spikes,</p>
+<div class="amsmath math notranslate nohighlight" id="equation-ad590688-2884-4b54-9ed6-7706342e82e7">
+<span class="eqno">(157)<a class="headerlink" href="#equation-ad590688-2884-4b54-9ed6-7706342e82e7" title="Permalink to this equation">¶</a></span>\[\begin{eqnarray}
+M(t) = M(t) - A_{-}
+\end{eqnarray}\]</div>
+<p>This way <span class="math notranslate nohighlight">\(M(t)\)</span> tracks the number of postsynaptic spikes over the timescale <span class="math notranslate nohighlight">\(\tau_{-}\)</span>.</p>
+<p>Similarly, for each presynaptic neuron, we define:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-671483d8-e7d5-4255-ace8-1a53afdff004">
+<span class="eqno">(158)<a class="headerlink" href="#equation-671483d8-e7d5-4255-ace8-1a53afdff004" title="Permalink to this equation">¶</a></span>\[\begin{eqnarray}
+\tau_{+} \frac{dP}{dt} = -P
+\end{eqnarray}\]</div>
+<p>and whenever there is spike on the presynaptic neuron,</p>
+<div class="amsmath math notranslate nohighlight" id="equation-9174bfe4-c59d-4176-9a9e-b42bd8e24348">
+<span class="eqno">(159)<a class="headerlink" href="#equation-9174bfe4-c59d-4176-9a9e-b42bd8e24348" title="Permalink to this equation">¶</a></span>\[\begin{eqnarray}
+P(t) = P(t) + A_{+}
+\end{eqnarray}\]</div>
+<p>The variables <span class="math notranslate nohighlight">\(M(t)\)</span> and <span class="math notranslate nohighlight">\(P(t)\)</span> are very similar to the equations for the synaptic conductances, i.e., <span class="math notranslate nohighlight">\(g_{i}(t)\)</span>, except that they are used to keep track of pre- and postsynaptic spike times on a much longer timescale. Note that, <span class="math notranslate nohighlight">\(M(t)\)</span> is always negative, and <span class="math notranslate nohighlight">\(P(t)\)</span> is always positive. You can probably already guess that <span class="math notranslate nohighlight">\(M\)</span> is used to induce LTD and <span class="math notranslate nohighlight">\(P\)</span> to induce LTP because they are updated by <span class="math notranslate nohighlight">\(A_{-}\)</span> and <span class="math notranslate nohighlight">\(A_{+}\)</span>, respectively.</p>
+<p><strong>Important note:</strong> <span class="math notranslate nohighlight">\(P(t)\)</span> depends on the presynaptic spike times. If we know the presynaptic spike times, <span class="math notranslate nohighlight">\(P\)</span> can be generated before simulating the postsynaptic neuron and the corresponding STDP weights.</p>
+</div>
+<div class="section" id="visualization-of-p">
+<h2>Visualization of <span class="math notranslate nohighlight">\(P\)</span><a class="headerlink" href="#visualization-of-p" title="Permalink to this headline">¶</a></h2>
+<p>Here, we will consider a scenario in which there is a single postsynaptic neuron connected to <span class="math notranslate nohighlight">\(N\)</span> presynaptic neurons.</p>
+<p>For instance, we have one postsynaptic neuron which receives Poisson type spiking inputs from five presynaptic neurons.</p>
+<p>We can simulate <span class="math notranslate nohighlight">\(P\)</span> for each one of the presynaptic neurons.</p>
+</div>
+<div class="section" id="exercise-2-compute-dp">
+<h2>Exercise 2: Compute <span class="math notranslate nohighlight">\(dP\)</span><a class="headerlink" href="#exercise-2-compute-dp" title="Permalink to this headline">¶</a></h2>
+<p>Here, yet again, we use the Euler scheme, which has been introduced several times in the previous tutorials.</p>
+<p>Similar to the dynamics of the membrane potential in the LIF model, in a time step <span class="math notranslate nohighlight">\(dt\)</span>, <span class="math notranslate nohighlight">\(P(t)\)</span> will decrease by an amount of <span class="math notranslate nohighlight">\(\displaystyle{\frac{dt}{\tau_+}P(t)}\)</span>. Whereas, if a presynaptic spike arrives, <span class="math notranslate nohighlight">\(P(t)\)</span> will instantaneously increase by an amount of <span class="math notranslate nohighlight">\(A_+\)</span>. Therefore,</p>
+<p>\</p>
+<div class="amsmath math notranslate nohighlight" id="equation-1257223f-9451-4528-a1a6-3f44fec0b68e">
+<span class="eqno">(160)<a class="headerlink" href="#equation-1257223f-9451-4528-a1a6-3f44fec0b68e" title="Permalink to this equation">¶</a></span>\[\begin{eqnarray}
+dP = -\displaystyle{\frac{dt}{\tau_+}P[t]} + A_+\cdot \text{sp_or_not}[t+dt]
+\end{eqnarray}\]</div>
+<p>\</p>
+<p>where the <span class="math notranslate nohighlight">\(\text{sp_or_not}\)</span> is a binary variable, i.e., <span class="math notranslate nohighlight">\(\text{sp_or_not}=1\)</span> if there is a spike within <span class="math notranslate nohighlight">\(dt\)</span>, and <span class="math notranslate nohighlight">\(\text{sp_or_not}=0\)</span> otherwise.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generate_P</span><span class="p">(</span><span class="n">pars</span><span class="p">,</span> <span class="n">pre_spike_train_ex</span><span class="p">):</span>
+  <span class="sd">"""</span>
+<span class="sd">  track of pre-synaptic spikes</span>
+
+<span class="sd">  Args:</span>
+<span class="sd">    pars               : parameter dictionary</span>
+<span class="sd">    pre_spike_train_ex : binary spike train input from</span>
+<span class="sd">                         presynaptic excitatory neuron</span>
+
+<span class="sd">  Returns:</span>
+<span class="sd">    P                  : LTP ratio</span>
+<span class="sd">  """</span>
+
+  <span class="c1"># Get parameters</span>
+  <span class="n">A_plus</span><span class="p">,</span> <span class="n">tau_stdp</span> <span class="o">=</span> <span class="n">pars</span><span class="p">[</span><span class="s1">'A_plus'</span><span class="p">],</span> <span class="n">pars</span><span class="p">[</span><span class="s1">'tau_stdp'</span><span class="p">]</span>
+  <span class="n">dt</span><span class="p">,</span> <span class="n">range_t</span> <span class="o">=</span> <span class="n">pars</span><span class="p">[</span><span class="s1">'dt'</span><span class="p">],</span> <span class="n">pars</span><span class="p">[</span><span class="s1">'range_t'</span><span class="p">]</span>
+  <span class="n">Lt</span> <span class="o">=</span> <span class="n">range_t</span><span class="o">.</span><span class="n">size</span>
+
+  <span class="c1"># Initialize</span>
+  <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">pre_spike_train_ex</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+  <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Lt</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="c1">#######################################################################</span>
+    <span class="c1">## TODO for students: compute dP, then remove the NotImplementedError #</span>
+    <span class="c1"># Fill out when you finish the function</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"Student excercise: compute P, the change of presynaptic spike"</span><span class="p">)</span>
+    <span class="c1">#######################################################################</span>
+    <span class="c1"># Calculate the delta increment dP</span>
+    <span class="n">dP</span> <span class="o">=</span> <span class="o">...</span>
+    <span class="c1"># Update P</span>
+    <span class="n">P</span><span class="p">[:,</span> <span class="n">it</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">P</span><span class="p">[:,</span> <span class="n">it</span><span class="p">]</span> <span class="o">+</span> <span class="n">dP</span>
+
+  <span class="k">return</span> <span class="n">P</span>
+
+
+<span class="c1"># Uncomment these lines to test your function</span>
+<span class="c1"># pars = default_pars_STDP(T=200., dt=1.)</span>
+<span class="c1"># pre_spike_train_ex = Poisson_generator(pars, rate=10, n=5, myseed=2020)</span>
+<span class="c1"># P = generate_P(pars, pre_spike_train_ex)</span>
+<span class="c1"># my_example_P()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/NeuromatchAcademy/course-content/tree/master//tutorials/W2D3_BiologicalNeuronModels/solutions/W2D3_Tutorial4_Solution_9de149a2.py"><em>Click for solution</em></a></p>
+<p><em>Example output:</em></p>
+<a class="reference internal image-reference" href="https://raw.githubusercontent.com/NeuromatchAcademy/course-content/master/tutorials/W2D3_BiologicalNeuronModels/static/W2D3_Tutorial4_Solution_9de149a2_0.png"><img align="center" alt="Solution hint" class="align-center" src="https://raw.githubusercontent.com/NeuromatchAcademy/course-content/master/tutorials/W2D3_BiologicalNeuronModels/static/W2D3_Tutorial4_Solution_9de149a2_0.png" style="width: 485px; height: 413px;"/></a>
+</div>
+</div>
+<hr class="docutils"/>
+<div class="section" id="section-2-implementation-of-stdp">
+<h1>Section 2: Implementation of STDP<a class="headerlink" href="#section-2-implementation-of-stdp" title="Permalink to this headline">¶</a></h1>
+<p>Finally, to implement STDP in spiking networks, we will change the value of the peak synaptic conductance based on the presynaptic and postsynaptic timing, thus using the variables <span class="math notranslate nohighlight">\(P(t)\)</span> and <span class="math notranslate nohighlight">\(M(t)\)</span>.</p>
+<p>Each synapse <span class="math notranslate nohighlight">\(i\)</span> has its own peak synaptic conductance (<span class="math notranslate nohighlight">\(\bar g_i\)</span>), which may vary between <span class="math notranslate nohighlight">\([0, \bar g_{max}]\)</span>, and will be modified depending on the presynaptic and postsynaptic timing.</p>
+<ul>
+<li><p>When the <span class="math notranslate nohighlight">\(i_{th}\)</span> presynaptic neuron elicits a spike, its corresponding peak conductance is updated according to the following equation:</p>
+<p>\</p>
+<div class="amsmath math notranslate nohighlight" id="equation-581d106e-0066-4301-a86b-0fce855b471c">
+<span class="eqno">(161)<a class="headerlink" href="#equation-581d106e-0066-4301-a86b-0fce855b471c" title="Permalink to this equation">¶</a></span>\[\begin{eqnarray}
+  \bar g_i = \bar g_i + M(t)\bar g_{max}
+  \end{eqnarray}\]</div>
+<p>\</p>
+<p>Note that, <span class="math notranslate nohighlight">\(M(t)\)</span> tracks the time since the last postsynaptic potential and is always negative. Hence, if <em>the postsynaptic neuron spikes shortly before the presynaptic neuron</em>, the above equation shows that the peak conductance will decrease.</p>
+</li>
+<li><p>When the postsynaptic neuron spikes, the peak conductance of <strong>each</strong> synapse is updated according to:</p>
+<p>\</p>
+<div class="amsmath math notranslate nohighlight" id="equation-ac4c9d63-801b-4528-a3f9-fffc78266304">
+<span class="eqno">(162)<a class="headerlink" href="#equation-ac4c9d63-801b-4528-a3f9-fffc78266304" title="Permalink to this equation">¶</a></span>\[\begin{eqnarray}
+  \bar g_i = \bar g_i + P_i(t)\bar g_{max}, \forall i
+  \end{eqnarray}\]</div>
+<p>\</p>
+<p>Note that, <span class="math notranslate nohighlight">\(P_i(t)\)</span> tracks the time since the last spike of <span class="math notranslate nohighlight">\(i_{th}\)</span> pre-synaptic neuron and is always positive.</p>
+<p>Thus, the equation given above shows that if the presynaptic neuron spikes before the postsynaptic neuron, its peak conductance will increase.</p>
+</li>
+</ul>
+<div class="section" id="lif-neuron-connected-with-synapses-that-show-stdp">
+<h2>LIF neuron connected with synapses that show STDP<a class="headerlink" href="#lif-neuron-connected-with-synapses-that-show-stdp" title="Permalink to this headline">¶</a></h2>
+<p>In the following exercise, we connect <span class="math notranslate nohighlight">\(N\)</span> presynaptic neurons to a single postsynaptic neuron. We do not need to simulate the dynamics of each presynaptic neuron as we are only concerned about their spike times. So, we will generate <span class="math notranslate nohighlight">\(N\)</span> Poisson type spikes. Here, we will assume that all these inputs are excitatory.</p>
+<p>We need to simulate the dynamics of the postsynaptic neuron as we do not know its spike times. We model the postsynaptic neuron as an LIF neuron receiving only excitatory inputs.</p>
+<p>\</p>
+<div class="amsmath math notranslate nohighlight" id="equation-60038292-2827-4230-8733-c9701e2a3e70">
+<span class="eqno">(163)<a class="headerlink" href="#equation-60038292-2827-4230-8733-c9701e2a3e70" title="Permalink to this equation">¶</a></span>\[\begin{eqnarray}
+\tau_m\frac{dV}{dt} = -(V-E_L) - g_E(t) (V(t)-E_E)\,
+\end{eqnarray}\]</div>
+<p>\</p>
+<p>where the total excitatory synaptic conductance  <span class="math notranslate nohighlight">\(g_{E}(t)\)</span>  is given by:</p>
+<p>\</p>
+<div class="amsmath math notranslate nohighlight" id="equation-d842869d-7832-4644-af36-f7bdcd0c8e98">
+<span class="eqno">(164)<a class="headerlink" href="#equation-d842869d-7832-4644-af36-f7bdcd0c8e98" title="Permalink to this equation">¶</a></span>\[\begin{eqnarray}
+g_E(t) = \sum_{i=1}^{N} g_i(t) \,
+\end{eqnarray}\]</div>
+<p>\</p>
+<p>While simulating STDP, it is important to make sure that <span class="math notranslate nohighlight">\(\bar g_i\)</span> never goes outside of its bounds.</p>
+</div>
+<div class="section" id="function-for-lif-neuron-with-stdp-synapses">
+<h2>Function for LIF neuron with STDP synapses<a class="headerlink" href="#function-for-lif-neuron-with-stdp-synapses" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># @title Function for LIF neuron with STDP synapses</span>
+
+
+<span class="k">def</span> <span class="nf">run_LIF_cond_STDP</span><span class="p">(</span><span class="n">pars</span><span class="p">,</span> <span class="n">pre_spike_train_ex</span><span class="p">):</span>
+  <span class="sd">"""</span>
+<span class="sd">  conductance-based LIF dynamics</span>
+
+<span class="sd">  Args:</span>
+<span class="sd">    pars               : parameter dictionary</span>
+<span class="sd">    pre_spike_train_ex : spike train input from presynaptic excitatory neuron</span>
+
+<span class="sd">  Returns:</span>
+<span class="sd">    rec_spikes         : spike times</span>
+<span class="sd">    rec_v              : mebrane potential</span>
+<span class="sd">    gE                 : postsynaptic excitatory conductance</span>
+<span class="sd">  """</span>
+
+  <span class="c1"># Retrieve parameters</span>
+  <span class="n">V_th</span><span class="p">,</span> <span class="n">V_reset</span> <span class="o">=</span> <span class="n">pars</span><span class="p">[</span><span class="s1">'V_th'</span><span class="p">],</span> <span class="n">pars</span><span class="p">[</span><span class="s1">'V_reset'</span><span class="p">]</span>
+  <span class="n">tau_m</span> <span class="o">=</span> <span class="n">pars</span><span class="p">[</span><span class="s1">'tau_m'</span><span class="p">]</span>
+  <span class="n">V_init</span><span class="p">,</span> <span class="n">V_L</span> <span class="o">=</span> <span class="n">pars</span><span class="p">[</span><span class="s1">'V_init'</span><span class="p">],</span> <span class="n">pars</span><span class="p">[</span><span class="s1">'V_L'</span><span class="p">]</span>
+  <span class="n">gE_bar</span><span class="p">,</span> <span class="n">VE</span><span class="p">,</span> <span class="n">tau_syn_E</span> <span class="o">=</span> <span class="n">pars</span><span class="p">[</span><span class="s1">'gE_bar'</span><span class="p">],</span> <span class="n">pars</span><span class="p">[</span><span class="s1">'VE'</span><span class="p">],</span> <span class="n">pars</span><span class="p">[</span><span class="s1">'tau_syn_E'</span><span class="p">]</span>
+  <span class="n">gE_init</span> <span class="o">=</span> <span class="n">pars</span><span class="p">[</span><span class="s1">'gE_init'</span><span class="p">]</span>
+  <span class="n">tref</span> <span class="o">=</span> <span class="n">pars</span><span class="p">[</span><span class="s1">'tref'</span><span class="p">]</span>
+  <span class="n">A_minus</span><span class="p">,</span> <span class="n">tau_stdp</span> <span class="o">=</span> <span class="n">pars</span><span class="p">[</span><span class="s1">'A_minus'</span><span class="p">],</span> <span class="n">pars</span><span class="p">[</span><span class="s1">'tau_stdp'</span><span class="p">]</span>
+  <span class="n">dt</span><span class="p">,</span> <span class="n">range_t</span> <span class="o">=</span> <span class="n">pars</span><span class="p">[</span><span class="s1">'dt'</span><span class="p">],</span> <span class="n">pars</span><span class="p">[</span><span class="s1">'range_t'</span><span class="p">]</span>
+  <span class="n">Lt</span> <span class="o">=</span> <span class="n">range_t</span><span class="o">.</span><span class="n">size</span>
+
+  <span class="n">P</span> <span class="o">=</span> <span class="n">generate_P</span><span class="p">(</span><span class="n">pars</span><span class="p">,</span> <span class="n">pre_spike_train_ex</span><span class="p">)</span>
+
+  <span class="c1"># Initialize</span>
+  <span class="n">tr</span> <span class="o">=</span> <span class="mf">0.</span>
+  <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">Lt</span><span class="p">)</span>
+  <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">V_init</span>
+  <span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">Lt</span><span class="p">)</span>
+  <span class="n">gE</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">Lt</span><span class="p">)</span>
+  <span class="n">gE_bar_update</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">pre_spike_train_ex</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+  <span class="n">gE_bar_update</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">gE_init</span>  <span class="c1"># note: gE_bar is the maximum value</span>
+
+  <span class="c1"># simulation</span>
+  <span class="n">rec_spikes</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># recording spike times</span>
+  <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Lt</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+      <span class="k">if</span> <span class="n">tr</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+          <span class="n">v</span><span class="p">[</span><span class="n">it</span><span class="p">]</span> <span class="o">=</span> <span class="n">V_reset</span>
+          <span class="n">tr</span> <span class="o">=</span> <span class="n">tr</span> <span class="o">-</span> <span class="mi">1</span>
+      <span class="k">elif</span> <span class="n">v</span><span class="p">[</span><span class="n">it</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">V_th</span><span class="p">:</span>   <span class="c1"># reset voltage and record spike event</span>
+          <span class="n">rec_spikes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">it</span><span class="p">)</span>
+          <span class="n">v</span><span class="p">[</span><span class="n">it</span><span class="p">]</span> <span class="o">=</span> <span class="n">V_reset</span>
+          <span class="n">M</span><span class="p">[</span><span class="n">it</span><span class="p">]</span> <span class="o">=</span> <span class="n">M</span><span class="p">[</span><span class="n">it</span><span class="p">]</span> <span class="o">-</span> <span class="n">A_minus</span>
+          <span class="n">gE_bar_update</span><span class="p">[:,</span> <span class="n">it</span><span class="p">]</span> <span class="o">=</span> <span class="n">gE_bar_update</span><span class="p">[:,</span> <span class="n">it</span><span class="p">]</span> <span class="o">+</span> <span class="n">P</span><span class="p">[:,</span> <span class="n">it</span><span class="p">]</span> <span class="o">*</span> <span class="n">gE_bar</span>
+          <span class="n">id_temp</span> <span class="o">=</span> <span class="n">gE_bar_update</span><span class="p">[:,</span> <span class="n">it</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">gE_bar</span>
+          <span class="n">gE_bar_update</span><span class="p">[</span><span class="n">id_temp</span><span class="p">,</span> <span class="n">it</span><span class="p">]</span> <span class="o">=</span> <span class="n">gE_bar</span>
+          <span class="n">tr</span> <span class="o">=</span> <span class="n">tref</span> <span class="o">/</span> <span class="n">dt</span>
+
+      <span class="c1"># update the synaptic conductance</span>
+      <span class="n">M</span><span class="p">[</span><span class="n">it</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">M</span><span class="p">[</span><span class="n">it</span><span class="p">]</span> <span class="o">-</span> <span class="n">dt</span> <span class="o">/</span> <span class="n">tau_stdp</span> <span class="o">*</span> <span class="n">M</span><span class="p">[</span><span class="n">it</span><span class="p">]</span>
+      <span class="n">gE</span><span class="p">[</span><span class="n">it</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">gE</span><span class="p">[</span><span class="n">it</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">dt</span> <span class="o">/</span> <span class="n">tau_syn_E</span><span class="p">)</span> <span class="o">*</span> <span class="n">gE</span><span class="p">[</span><span class="n">it</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">gE_bar_update</span><span class="p">[:,</span> <span class="n">it</span><span class="p">]</span> <span class="o">*</span> <span class="n">pre_spike_train_ex</span><span class="p">[:,</span> <span class="n">it</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+      <span class="n">gE_bar_update</span><span class="p">[:,</span> <span class="n">it</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">gE_bar_update</span><span class="p">[:,</span> <span class="n">it</span><span class="p">]</span> <span class="o">+</span> <span class="n">M</span><span class="p">[</span><span class="n">it</span><span class="p">]</span><span class="o">*</span><span class="n">pre_spike_train_ex</span><span class="p">[:,</span> <span class="n">it</span><span class="p">]</span><span class="o">*</span><span class="n">gE_bar</span>
+      <span class="n">id_temp</span> <span class="o">=</span> <span class="n">gE_bar_update</span><span class="p">[:,</span> <span class="n">it</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span>
+      <span class="n">gE_bar_update</span><span class="p">[</span><span class="n">id_temp</span><span class="p">,</span> <span class="n">it</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.</span>
+
+      <span class="c1"># calculate the increment of the membrane potential</span>
+      <span class="n">dv</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="n">it</span><span class="p">]</span> <span class="o">-</span> <span class="n">V_L</span><span class="p">)</span> <span class="o">-</span> <span class="n">gE</span><span class="p">[</span><span class="n">it</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="n">it</span><span class="p">]</span> <span class="o">-</span> <span class="n">VE</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">dt</span> <span class="o">/</span> <span class="n">tau_m</span><span class="p">)</span>
+
+      <span class="c1"># update membrane potential</span>
+      <span class="n">v</span><span class="p">[</span><span class="n">it</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">it</span><span class="p">]</span> <span class="o">+</span> <span class="n">dv</span>
+
+  <span class="n">rec_spikes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rec_spikes</span><span class="p">)</span> <span class="o">*</span> <span class="n">dt</span>
+
+  <span class="k">return</span> <span class="n">v</span><span class="p">,</span> <span class="n">rec_spikes</span><span class="p">,</span> <span class="n">gE</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">gE_bar_update</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="evolution-of-excitatory-synaptic-conductance">
+<h2>Evolution of excitatory synaptic conductance<a class="headerlink" href="#evolution-of-excitatory-synaptic-conductance" title="Permalink to this headline">¶</a></h2>
+<p>In the following exercise, we will simulate an LIF neuron receiving input from <span class="math notranslate nohighlight">\(N=300\)</span> presynaptic neurons.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pars</span> <span class="o">=</span> <span class="n">default_pars_STDP</span><span class="p">(</span><span class="n">T</span><span class="o">=</span><span class="mf">200.</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mf">1.</span><span class="p">)</span>  <span class="c1"># Simulation duration 200 ms</span>
+<span class="n">pars</span><span class="p">[</span><span class="s1">'gE_bar'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.024</span>                   <span class="c1"># max synaptic conductance</span>
+<span class="n">pars</span><span class="p">[</span><span class="s1">'gE_init'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.024</span>                  <span class="c1"># initial synaptic conductance</span>
+<span class="n">pars</span><span class="p">[</span><span class="s1">'VE'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.</span>                          <span class="c1"># [mV] Synapse reversal potential</span>
+<span class="n">pars</span><span class="p">[</span><span class="s1">'tau_syn_E'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">5.</span>                   <span class="c1"># [ms] EPSP time constant</span>
+
+<span class="c1"># generate Poisson type spike trains</span>
+<span class="n">pre_spike_train_ex</span> <span class="o">=</span> <span class="n">Poisson_generator</span><span class="p">(</span><span class="n">pars</span><span class="p">,</span> <span class="n">rate</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">myseed</span><span class="o">=</span><span class="mi">2020</span><span class="p">)</span>
+<span class="c1"># simulate the LIF neuron and record the synaptic conductance</span>
+<span class="n">v</span><span class="p">,</span> <span class="n">rec_spikes</span><span class="p">,</span> <span class="n">gE</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">gE_bar_update</span> <span class="o">=</span> <span class="n">run_LIF_cond_STDP</span><span class="p">(</span><span class="n">pars</span><span class="p">,</span>
+                                                           <span class="n">pre_spike_train_ex</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+</div>
+<div class="section" id="figures-of-the-evolution-of-synaptic-conductance">
+<h3>Figures of the evolution of synaptic conductance<a class="headerlink" href="#figures-of-the-evolution-of-synaptic-conductance" title="Permalink to this headline">¶</a></h3>
+<p>Run this cell to see the figures!</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># @title Figures of the evolution of synaptic conductance</span>
+
+<span class="c1"># @markdown Run this cell to see the figures!</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">12.</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">321</span><span class="p">)</span>
+<span class="n">dt</span><span class="p">,</span> <span class="n">range_t</span> <span class="o">=</span> <span class="n">pars</span><span class="p">[</span><span class="s1">'dt'</span><span class="p">],</span> <span class="n">pars</span><span class="p">[</span><span class="s1">'range_t'</span><span class="p">]</span>
+<span class="k">if</span> <span class="n">rec_spikes</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+  <span class="n">sp_num</span> <span class="o">=</span> <span class="p">(</span><span class="n">rec_spikes</span> <span class="o">/</span> <span class="n">dt</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+  <span class="n">v</span><span class="p">[</span><span class="n">sp_num</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">10</span>   <span class="c1"># add artificial spikes</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pars</span><span class="p">[</span><span class="s1">'range_t'</span><span class="p">],</span> <span class="n">v</span><span class="p">,</span> <span class="s1">'k'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Time (ms)'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'V (mV)'</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">322</span><span class="p">)</span>
+<span class="c1"># Plot the sample presynaptic spike trains</span>
+<span class="n">my_raster_plot</span><span class="p">(</span><span class="n">pars</span><span class="p">[</span><span class="s1">'range_t'</span><span class="p">],</span> <span class="n">pre_spike_train_ex</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">323</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pars</span><span class="p">[</span><span class="s1">'range_t'</span><span class="p">],</span> <span class="n">M</span><span class="p">,</span> <span class="s1">'k'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Time (ms)'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'M'</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">324</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pars</span><span class="p">[</span><span class="s1">'range_t'</span><span class="p">],</span> <span class="n">P</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Time (ms)'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'P'</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">325</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pars</span><span class="p">[</span><span class="s1">'range_t'</span><span class="p">],</span> <span class="n">gE_bar_update</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Time (ms)'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">'$\bar g$'</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">326</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pars</span><span class="p">[</span><span class="s1">'range_t'</span><span class="p">],</span> <span class="n">gE</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Time (ms)'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">'$g_E$'</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+<div class="section" id="think">
+<h2>Think!<a class="headerlink" href="#think" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>In the above, even though all the presynaptic neurons have the same average firing rate, many of the synapses seem to have been weakened? Did you expect that?</p></li>
+<li><p>Total synaptic conductance is fluctuating over time. How do you expect <span class="math notranslate nohighlight">\(g_E\)</span> to fluctuate if synapses did not show any STDP like behavior?</p></li>
+<li><p>Do synaptic weight ever reach a stationary state when synapses show STDP?</p></li>
+</ul>
+<p><a class="reference external" href="https://github.com/NeuromatchAcademy/course-content/tree/master//tutorials/W2D3_BiologicalNeuronModels/solutions/W2D3_Tutorial4_Solution_07dba4f3.py"><em>Click for solution</em></a></p>
+</div>
+<div class="section" id="distribution-of-synaptic-weight">
+<h2>Distribution of synaptic weight<a class="headerlink" href="#distribution-of-synaptic-weight" title="Permalink to this headline">¶</a></h2>
+<p>From the example given above, we get an idea that some synapses depotentiate, but what is the distribution of the synaptic weights when synapses show STDP?</p>
+<p>In fact, it is possible that even the synaptic weight distribution itself is a time-varying quantity. So, we would like to know how the distribution of synaptic weights evolves as a function of time.</p>
+<p>To get a better estimate of the weight distribution and its time evolution, we will increase the presynaptic firing rate to <span class="math notranslate nohighlight">\(15\)</span>Hz and simulate the postsynaptic neuron for <span class="math notranslate nohighlight">\(120\)</span>s.</p>
+<div class="section" id="functions-for-simulating-a-lif-neuron-with-stdp-synapses">
+<h3>Functions for simulating a LIF neuron with STDP synapses<a class="headerlink" href="#functions-for-simulating-a-lif-neuron-with-stdp-synapses" title="Permalink to this headline">¶</a></h3>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># @title Functions for simulating a LIF neuron with STDP synapses</span>
+
+
+<span class="k">def</span> <span class="nf">example_LIF_STDP</span><span class="p">(</span><span class="n">inputrate</span><span class="o">=</span><span class="mf">15.</span><span class="p">,</span> <span class="n">Tsim</span><span class="o">=</span><span class="mf">120000.</span><span class="p">):</span>
+  <span class="sd">"""</span>
+<span class="sd">  Simulation of a LIF model with STDP synapses</span>
+
+<span class="sd">  Args:</span>
+<span class="sd">    intputrate  :  The rate used for generate presynaptic spike trains</span>
+<span class="sd">    Tsim        :  Total simulation time</span>
+
+<span class="sd">  output:</span>
+<span class="sd">    Interactive demo, Visualization of synaptic weights</span>
+<span class="sd">  """</span>
+
+  <span class="n">pars</span> <span class="o">=</span> <span class="n">default_pars_STDP</span><span class="p">(</span><span class="n">T</span><span class="o">=</span><span class="n">Tsim</span><span class="p">,</span>  <span class="n">dt</span><span class="o">=</span><span class="mf">1.</span><span class="p">)</span>
+  <span class="n">pars</span><span class="p">[</span><span class="s1">'gE_bar'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.024</span>
+  <span class="n">pars</span><span class="p">[</span><span class="s1">'gE_init'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.014</span>  <span class="c1"># initial synaptic conductance</span>
+  <span class="n">pars</span><span class="p">[</span><span class="s1">'VE'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.</span>          <span class="c1"># [mV]</span>
+  <span class="n">pars</span><span class="p">[</span><span class="s1">'tau_syn_E'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">5.</span>   <span class="c1"># [ms]</span>
+
+  <span class="n">starttime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+  <span class="n">pre_spike_train_ex</span> <span class="o">=</span> <span class="n">Poisson_generator</span><span class="p">(</span><span class="n">pars</span><span class="p">,</span> <span class="n">rate</span><span class="o">=</span><span class="n">inputrate</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>
+                                         <span class="n">myseed</span><span class="o">=</span><span class="mi">2020</span><span class="p">)</span>  <span class="c1"># generate Poisson trains</span>
+  <span class="n">v</span><span class="p">,</span> <span class="n">rec_spikes</span><span class="p">,</span> <span class="n">gE</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">gE_bar_update</span> <span class="o">=</span> <span class="n">run_LIF_cond_STDP</span><span class="p">(</span><span class="n">pars</span><span class="p">,</span>
+                                                             <span class="n">pre_spike_train_ex</span><span class="p">)</span>  <span class="c1"># simulate LIF neuron with STDP</span>
+  <span class="n">gbar_norm</span> <span class="o">=</span> <span class="n">gE_bar_update</span><span class="o">/</span><span class="n">pars</span><span class="p">[</span><span class="s1">'gE_bar'</span><span class="p">]</span>  <span class="c1"># calculate the ratio of the synaptic conductance</span>
+  <span class="n">endtime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+  <span class="n">timecost</span> <span class="o">=</span> <span class="p">(</span><span class="n">endtime</span> <span class="o">-</span> <span class="n">starttime</span><span class="p">)</span> <span class="o">/</span> <span class="mf">60.</span>
+
+  <span class="nb">print</span><span class="p">(</span><span class="s1">'Total simulation time is </span><span class="si">%.3f</span><span class="s1"> min'</span> <span class="o">%</span> <span class="n">timecost</span><span class="p">)</span>
+
+  <span class="n">my_layout</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="s1">'620px'</span>
+
+  <span class="nd">@widgets</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span>
+      <span class="n">sample_time</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">FloatSlider</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                                      <span class="n">layout</span><span class="o">=</span><span class="n">my_layout</span><span class="p">)</span>
+  <span class="p">)</span>
+
+
+  <span class="k">def</span> <span class="nf">my_visual_STDP_distribution</span><span class="p">(</span><span class="n">sample_time</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+    <span class="n">sample_time</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sample_time</span> <span class="o">*</span> <span class="n">pars</span><span class="p">[</span><span class="s1">'range_t'</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">sample_time</span> <span class="o">=</span> <span class="n">sample_time</span> <span class="o">*</span> <span class="p">(</span><span class="n">sample_time</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+    <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">211</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">):</span>
+      <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pars</span><span class="p">[</span><span class="s1">'range_t'</span><span class="p">][::</span><span class="mi">1000</span><span class="p">]</span> <span class="o">/</span> <span class="mf">1000.</span><span class="p">,</span> <span class="n">gE_bar_update</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">::</span><span class="mi">1000</span><span class="p">],</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+
+    <span class="n">ax1</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mf">1e-3</span> <span class="o">*</span> <span class="n">pars</span><span class="p">[</span><span class="s1">'range_t'</span><span class="p">][</span><span class="n">sample_time</span><span class="p">],</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">'--'</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.025</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">122</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Time (s)'</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">'$\bar</span><span class="si">{g}</span><span class="s1">$'</span><span class="p">)</span>
+
+    <span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mf">.05</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">,</span> <span class="mf">.05</span><span class="p">)</span>
+    <span class="n">g_dis</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">gbar_norm</span><span class="p">[:,</span> <span class="n">sample_time</span><span class="p">],</span> <span class="n">bins</span><span class="p">)</span>
+    <span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">212</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">bins</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">g_dis</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'b'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">'$\bar</span><span class="si">{g}</span><span class="s1">/g_{\mathrm</span><span class="si">{max}</span><span class="s1">}$'</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Number'</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">((</span><span class="s1">'Time = </span><span class="si">%.1f</span><span class="s1"> s'</span> <span class="o">%</span> <span class="p">(</span><span class="mf">1e-3</span> <span class="o">*</span> <span class="n">pars</span><span class="p">[</span><span class="s1">'range_t'</span><span class="p">][</span><span class="n">sample_time</span><span class="p">])),</span>
+                  <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="n">help</span><span class="p">(</span><span class="n">example_LIF_STDP</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function example_LIF_STDP in module __main__:
+
+example_LIF_STDP(inputrate=15.0, Tsim=120000.0)
+    Simulation of a LIF model with STDP synapses
+    
+    Args:
+      intputrate  :  The rate used for generate presynaptic spike trains
+      Tsim        :  Total simulation time
+    
+    output:
+      Interactive demo, Visualization of synaptic weights
+
+None
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="interactive-demo-example-of-an-lif-model-with-stdp">
+<h3>Interactive Demo: Example of an LIF model with STDP<a class="headerlink" href="#interactive-demo-example-of-an-lif-model-with-stdp" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id1">
+<h4><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<p>Make sure you execute this cell to enable the widget!</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># @title</span>
+
+<span class="c1"># @markdown Make sure you execute this cell to enable the widget!</span>
+
+<span class="n">example_LIF_STDP</span><span class="p">(</span><span class="n">inputrate</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="id2">
+<h2>Think!<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>Increase the firing rate (i.e., 30 Hz) of presynaptic neurons, and investigate the effect on the dynamics of synaptic weight distribution.</p>
+<p><a class="reference external" href="https://github.com/NeuromatchAcademy/course-content/tree/master//tutorials/W2D3_BiologicalNeuronModels/solutions/W2D3_Tutorial4_Solution_fe78e137.py"><em>Click for solution</em></a></p>
+</div>
+</div>
+<div class="section" id="section-3-effect-of-input-correlations">
+<h1>Section 3: Effect of input correlations<a class="headerlink" href="#section-3-effect-of-input-correlations" title="Permalink to this headline">¶</a></h1>
+<p>Thus far, we assumed that the input population was uncorrelated. What do you think will happen if presynaptic neurons were correlated?</p>
+<p>In the following, we will modify the input such that first <span class="math notranslate nohighlight">\(L\)</span> neurons have identical spike trains while the remaining inputs are uncorrelated. This is a highly simplified model of introducing correlations. You can try to code your own model of correlated spike trains.</p>
+<div class="section" id="function-for-lif-neuron-with-stdp-synapses-receiving-correlated-inputs">
+<h2>Function for LIF neuron with STDP synapses receiving correlated inputs<a class="headerlink" href="#function-for-lif-neuron-with-stdp-synapses-receiving-correlated-inputs" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#@title Function for LIF neuron with STDP synapses receiving correlated inputs</span>
+
+
+<span class="k">def</span> <span class="nf">example_LIF_STDP_corrInput</span><span class="p">(</span><span class="n">inputrate</span><span class="o">=</span><span class="mf">20.</span><span class="p">,</span> <span class="n">Tsim</span><span class="o">=</span><span class="mf">120000.</span><span class="p">):</span>
+  <span class="sd">"""</span>
+<span class="sd">  A LIF model equipped with STDP synapses, receiving correlated inputs</span>
+
+<span class="sd">  Args:</span>
+<span class="sd">    intputrate      :  The rate used for generate presynaptic spike trains</span>
+<span class="sd">    Tsim            :  Total simulation time</span>
+
+<span class="sd">  Returns:</span>
+<span class="sd">    Interactive demo: Visualization of synaptic weights</span>
+<span class="sd">  """</span>
+
+  <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">2020</span><span class="p">)</span>
+  <span class="n">pars</span> <span class="o">=</span> <span class="n">default_pars_STDP</span><span class="p">(</span><span class="n">T</span><span class="o">=</span><span class="n">Tsim</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mf">1.</span><span class="p">)</span>
+  <span class="n">pars</span><span class="p">[</span><span class="s1">'gE_bar'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.024</span>
+  <span class="n">pars</span><span class="p">[</span><span class="s1">'VE'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.</span>                                <span class="c1"># [mV]</span>
+  <span class="n">pars</span><span class="p">[</span><span class="s1">'gE_init'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.024</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">300</span><span class="p">)</span>  <span class="c1"># initial synaptic conductance</span>
+  <span class="n">pars</span><span class="p">[</span><span class="s1">'tau_syn_E'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">5.</span>                         <span class="c1"># [ms]</span>
+
+  <span class="n">starttime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+  <span class="n">pre_spike_train_ex</span> <span class="o">=</span> <span class="n">Poisson_generator</span><span class="p">(</span><span class="n">pars</span><span class="p">,</span> <span class="n">rate</span><span class="o">=</span><span class="n">inputrate</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">myseed</span><span class="o">=</span><span class="mi">2020</span><span class="p">)</span>
+  <span class="k">for</span> <span class="n">i_pre</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">):</span>
+    <span class="n">pre_spike_train_ex</span><span class="p">[</span><span class="n">i_pre</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">pre_spike_train_ex</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>  <span class="c1"># simple way to set input correlated</span>
+  <span class="n">v</span><span class="p">,</span> <span class="n">rec_spikes</span><span class="p">,</span> <span class="n">gE</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">gE_bar_update</span> <span class="o">=</span> <span class="n">run_LIF_cond_STDP</span><span class="p">(</span><span class="n">pars</span><span class="p">,</span> <span class="n">pre_spike_train_ex</span><span class="p">)</span> <span class="c1"># simulate LIF neuron with STDP</span>
+  <span class="n">gbar_norm</span> <span class="o">=</span> <span class="n">gE_bar_update</span> <span class="o">/</span> <span class="n">pars</span><span class="p">[</span><span class="s1">'gE_bar'</span><span class="p">]</span>  <span class="c1"># calculate the ratio of the synaptic conductance</span>
+  <span class="n">endtime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+  <span class="n">timecost</span> <span class="o">=</span> <span class="p">(</span><span class="n">endtime</span> <span class="o">-</span> <span class="n">starttime</span><span class="p">)</span> <span class="o">/</span> <span class="mf">60.</span>
+
+  <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Total simulation time is </span><span class="si">{</span><span class="n">timecost</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1"> min'</span><span class="p">)</span>
+
+  <span class="n">my_layout</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="s1">'620px'</span>
+
+  <span class="nd">@widgets</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span>
+      <span class="n">sample_time</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">FloatSlider</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+                                      <span class="n">layout</span><span class="o">=</span><span class="n">my_layout</span><span class="p">)</span>
+  <span class="p">)</span>
+
+
+  <span class="k">def</span> <span class="nf">my_visual_STDP_distribution</span><span class="p">(</span><span class="n">sample_time</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+
+    <span class="n">sample_time</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sample_time</span> <span class="o">*</span> <span class="n">pars</span><span class="p">[</span><span class="s1">'range_t'</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">sample_time</span> <span class="o">=</span> <span class="n">sample_time</span><span class="o">*</span><span class="p">(</span><span class="n">sample_time</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">figtemp</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+    <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">211</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">):</span>
+      <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pars</span><span class="p">[</span><span class="s1">'range_t'</span><span class="p">][::</span><span class="mi">1000</span><span class="p">]</span> <span class="o">/</span> <span class="mf">1000.</span><span class="p">,</span>
+               <span class="n">gE_bar_update</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">::</span><span class="mi">1000</span><span class="p">],</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'r'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">):</span>
+      <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pars</span><span class="p">[</span><span class="s1">'range_t'</span><span class="p">][::</span><span class="mi">1000</span><span class="p">]</span> <span class="o">/</span> <span class="mf">1000.</span><span class="p">,</span>
+               <span class="n">gE_bar_update</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">50</span><span class="p">,</span> <span class="p">::</span><span class="mi">1000</span><span class="p">],</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'b'</span><span class="p">,</span>
+               <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">ax1</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mf">1e-3</span> <span class="o">*</span> <span class="n">pars</span><span class="p">[</span><span class="s1">'range_t'</span><span class="p">][</span><span class="n">sample_time</span><span class="p">],</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span>
+                <span class="n">color</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.025</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">122</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Time (s)'</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">'$\bar</span><span class="si">{g}</span><span class="s1">$'</span><span class="p">)</span>
+    <span class="n">legend</span><span class="o">=</span><span class="n">ax1</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">'Correlated input'</span><span class="p">,</span> <span class="s1">'Uncorrelated iput'</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span>
+                      <span class="n">loc</span><span class="o">=</span><span class="p">[</span><span class="mf">0.92</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.6</span><span class="p">],</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">color</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="s1">'r'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">],</span> <span class="n">legend</span><span class="o">.</span><span class="n">get_texts</span><span class="p">(),</span> <span class="n">legend</span><span class="o">.</span><span class="n">legendHandles</span><span class="p">):</span>
+      <span class="n">text</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+      <span class="n">item</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mf">.05</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">,</span> <span class="mf">.05</span><span class="p">)</span>
+    <span class="n">g_dis_cc</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">gbar_norm</span><span class="p">[:</span><span class="mi">50</span><span class="p">,</span> <span class="n">sample_time</span><span class="p">],</span> <span class="n">bins</span><span class="p">)</span>
+    <span class="n">g_dis_dp</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">gbar_norm</span><span class="p">[</span><span class="mi">50</span><span class="p">:,</span> <span class="n">sample_time</span><span class="p">],</span> <span class="n">bins</span><span class="p">)</span>
+
+    <span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">212</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">bins</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">g_dis_cc</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'r'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">bins</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">g_dis_dp</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'b'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">'$\bar</span><span class="si">{g}</span><span class="s1">/g_{\mathrm</span><span class="si">{max}</span><span class="s1">}$'</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Number'</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">((</span><span class="s1">'Time = </span><span class="si">%.1f</span><span class="s1"> s'</span> <span class="o">%</span> <span class="p">(</span><span class="mf">1e-3</span> <span class="o">*</span> <span class="n">pars</span><span class="p">[</span><span class="s1">'range_t'</span><span class="p">][</span><span class="n">sample_time</span><span class="p">])),</span>
+                  <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="n">help</span><span class="p">(</span><span class="n">example_LIF_STDP_corrInput</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function example_LIF_STDP_corrInput in module __main__:
+
+example_LIF_STDP_corrInput(inputrate=20.0, Tsim=120000.0)
+    A LIF model equipped with STDP synapses, receiving correlated inputs
+    
+    Args:
+      intputrate      :  The rate used for generate presynaptic spike trains
+      Tsim            :  Total simulation time
+    
+    Returns:
+      Interactive demo: Visualization of synaptic weights
+
+None
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="interactive-demo-lif-model-with-plastic-synapses-receiving-correlated-inputs">
+<h2>Interactive Demo: LIF model with plastic synapses receiving correlated inputs<a class="headerlink" href="#interactive-demo-lif-model-with-plastic-synapses-receiving-correlated-inputs" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id3">
+<h3><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>Make sure you execute this cell to enable the widget!</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># @title</span>
+
+<span class="c1"># @markdown Make sure you execute this cell to enable the widget!</span>
+
+<span class="n">example_LIF_STDP_corrInput</span><span class="p">(</span><span class="n">inputrate</span><span class="o">=</span><span class="mf">10.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+</div>
+<p><strong>Why do weights of uncorrelated neurons decrease when synapses show STDP</strong></p>
+<p>Above, we notice that the synapses of correlated neurons (which spike together) were almost unaffected, but the weights of other neurons diminished. Why does this happen?</p>
+<p>The reason is that the correlated presynaptic neurons have a higher chance of eliciting a spike in the postsynaptic neurons and that create a <span class="math notranslate nohighlight">\(pre \rightarrow post\)</span> pairing of spikes.</p>
+</div>
+</div>
+<div class="section" id="id4">
+<h2>Think!<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Modify the code above and create two groups of correlated presynaptic neurons and test what happens to the weight distribution.</p></li>
+<li><p>How can the above observations be used to create unsupervised learning? Could you imagine how we have to train a neuronal model enabled with STDP rule to identify input patterns?</p></li>
+<li><p>What else can be done with this type of plasticity?</p></li>
+</ul>
+<p><a class="reference external" href="https://github.com/NeuromatchAcademy/course-content/tree/master//tutorials/W2D3_BiologicalNeuronModels/solutions/W2D3_Tutorial4_Solution_b397ae39.py"><em>Click for solution</em></a></p>
+</div>
+</div>
+<hr class="docutils"/>
+<div class="section" id="summary">
+<h1>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h1>
+<p>Hooray! You have just finished this loooong day! In this tutorial, we covered the concept of <strong>spike-timing dependent plasticity (STDP)</strong>.</p>
+<p>We managed to:</p>
+<ul class="simple">
+<li><p>build a model of synapse that shows STDP.</p></li>
+<li><p>study how correlations in input spike trains influence the distribution of synaptic weights.</p></li>
+</ul>
+<p>Using presynaptic inputs as Poisson type spike trains, we modeled an LIF model with synapses equipped with STDP. We also studied the effect of correlated inputs on the synaptic strength!</p>
+</div>
+<script type="application/vnd.jupyter.widget-state+json">
+{"state": {"67476005bb9242f99ab9e1ddc0acfd3e": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "fa88867607004ac8a66829869b1319da": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "4098f708317047d49d0a25b8d2ce62a7": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_fa88867607004ac8a66829869b1319da", "msg_id": "", "outputs": [{"output_type": "stream", "name": "stdout", "text": "Video available at https://www.bilibili.com/video/\n"}, {"output_type": "display_data", "metadata": {}, "data": {"text/plain": "<__main__.BiliVideo at 0x7f802378a890>", "text/html": "\n        <iframe\n            width=\"730\"\n            height=\"410\"\n            src=\"https://player.bilibili.com/player.html?bvid=&page=1?fs=1\"\n            frameborder=\"0\"\n            allowfullscreen\n        ></iframe>\n        "}}]}}, "f3983b0acd9f4a24ac6b5d302c27a7d6": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "6f6a9f4e4f76444b9a32788fcdc87619": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_f3983b0acd9f4a24ac6b5d302c27a7d6", "msg_id": "", "outputs": [{"output_type": "stream", "name": "stdout", "text": "Video available at https://youtube.com/watch?v=luHL-mO5S1w\n"}, {"output_type": "display_data", "metadata": {}, "data": {"text/plain": "<IPython.lib.display.YouTubeVideo at 0x7f8023731690>", "text/html": "\n        <iframe\n            width=\"730\"\n            height=\"410\"\n            src=\"https://www.youtube.com/embed/luHL-mO5S1w?fs=1&rel=0\"\n            frameborder=\"0\"\n            allowfullscreen\n        ></iframe>\n        ", "image/jpeg": "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JJHWGt97SEo5xOpc5znEkuc4lznOPEuc48XOJ1JJ69UQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEUM6V2PQh7n+0nSux6EPc/2kEzRQzpXY9CHuf7SdK7HoQ9z/aQTNFDOldj0Ie5/tJ0rsehD3P9pBM0UM6V2PQh7n+0nSux6EPc/wBpBM0UM6V2PQh7n+0nSux6EPc/2kEzRQzpXY9CHuf7SdK7HoQ9z/aQTNFDOldj0Ie5/tJ0rsehD3P9pBM0UM6V2PQh7n+0nSux6EPc/wBpBM0UM6V2PQh7n+0nSux6EPc/2kEzRQzpXY9CHuf7SdK7HoQ9z/aQTNFDOldj0Ie5/tJ0rsehD3P9pBM0UM6V2PQh7n+0nSux6EPc/wBpBM0UM6V2PQh7n+0nSux6EPc/2kEzRQzpXY9CHuf7SdK7HoQ9z/aQTNFDOldj0Ie5/tJ0rsehD3P9pBM0UM6V2PQh7n+0nSux6EPc/wBpBM0UM6V2PQh7n+0nSux6EPc/2kEzRQzpXY9CHuf7SdK7HoQ9z/aQTNFDOldj0Ie5/tJ0rsehD3P9pBM0UM6V2PQh7n+0nSux6EPc/wBpBM0UM6V2PQh7n+0nSux6EPc/2kEzRQzpXY9CHuf7SdK7HoQ9z/aQTNFDOldj0Ie5/tJ0rsehD3P9pBM0UM6V2PQh7n+0nSux6EPc/wBpBM0UM6V2PQh7n+0nSux6EPc/2kEzRQzpXY9CHuf7SdK7HoQ9z/aQTNFDOldj0Ie5/tJ0rsehD3P9pBM0UM6V2PQh7n+0nSux6EPc/wBpBM0UM6V2PQh7n+0nSux6EPc/2kEzRQzpXY9CHuf7SdK7HoQ9z/aQaBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREH//2Q==\n"}}]}}, "59a1c90a80674ce7864d5ab7d9e0f84e": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "ba7478790c564375a3f393b6956998fb": {"model_name": "TabModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "TabModel", "_titles": {"0": "Youtube", "1": "Bilibili"}, "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "TabView", "box_style": "", "children": ["IPY_MODEL_6f6a9f4e4f76444b9a32788fcdc87619", "IPY_MODEL_4098f708317047d49d0a25b8d2ce62a7"], "layout": "IPY_MODEL_59a1c90a80674ce7864d5ab7d9e0f84e", "selected_index": 0}}}, "version_major": 2, "version_minor": 0}
+</script>
+<script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./tutorials/W2D3_BiologicalNeuronModels/student"
+        },
+        predefinedOutput: true
+    }
+    </script>
+<script>kernelName = 'python3'</script>
+</div>
+<div class="prev-next-bottom">
+<a class="left-prev" href="W2D3_Tutorial3.html" id="prev-link" title="previous page">Tutorial 3: Synaptic transmission - Models of static and dynamic synapses</a>
+<a class="right-next" href="../W2D3_Outro.html" id="next-link" title="next page">Outro</a>
+</div>
+</div>
+</div>
+<footer class="footer mt-5 mt-md-0">
+<div class="container">
+<p>
+        
+          By Neuromatch<br/>
+        
+            © Copyright 2021.<br/>
+</p>
+</div>
+</footer>
+</main>
+</div>
+</div>
+<script src="../../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+</body>
+</html>
